@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  catalog.api:
+    image: catalog.api
+    build:
+      context: .
+      dockerfile: Catalog/Catalog.Host/Dockerfile
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=http://+:5000
+    ports:
+      - 5000:5000
