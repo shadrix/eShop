@@ -10,3 +10,7 @@ services:
        - ASPNETCORE_URLS=http://+:5000
     ports:
       - 5000:5000
+  nginx:
+    image: nginx
+    ports:
+      - 80:80
