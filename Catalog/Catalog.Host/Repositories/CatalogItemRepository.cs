@@ -34,4 +34,21 @@ public class CatalogItemRepository : ICatalogItemRepository
 
         return new PaginatedItems<CatalogItem>() { TotalCount = totalItems, Data = itemsOnPage };
     }
+
+    public async Task<int> Add(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
+    {
+        var item = _dbContext.CatalogItems.Add(new CatalogItem
+        {
+            CatalogBrandId = catalogBrandId,
+            CatalogTypeId = catalogTypeId,
+            Description = description,
+            Name = name,
+            PictureFileName = pictureFileName,
+            Price = price
+        });
+
+        await _dbContext.SaveChangesAsync();
+
+        return item.Entity.Id;
+    }
 }

@@ -9,7 +9,7 @@ public abstract class BaseDataService<T>
     private readonly IDbContextWrapper<T> _dbContextWrapper;
     private readonly ILogger<BaseDataService<T>> _logger;
 
-    public BaseDataService(
+    protected BaseDataService(
         IDbContextWrapper<T> dbContextWrapper,
         ILogger<BaseDataService<T>> logger)
     {
