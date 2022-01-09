@@ -1,13 +1,26 @@
+using AutoMapper;
 using Catalog.Host.Configurations;
 using Catalog.Host.Data;
+using Catalog.Host.Mapping;
+using Catalog.Host.Repositories;
+using Catalog.Host.Repositories.Interfaces;
+using Catalog.Host.Services;
+using Catalog.Host.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
 var configuration = GetConfiguration();
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(configuration["ConnectionString"]));
 builder.Services.Configure<CatalogConfig>(configuration);
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.AddTransient<ICatalogItemRepository, CatalogItemRepository>();
+builder.Services.AddTransient<ICatalogService, CatalogService>();
+builder.Services.AddDbContextFactory<ApplicationDbContext>(opts => opts.UseNpgsql(configuration["ConnectionString"]));
+builder.Services.AddScoped<IDbContextWrapper<ApplicationDbContext>, DbContextWrapper<ApplicationDbContext>>();
 
 var app = builder.Build();
 

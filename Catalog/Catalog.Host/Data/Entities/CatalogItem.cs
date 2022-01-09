@@ -1,5 +1,4 @@
 #pragma warning disable CS8618
-using Catalog.Host.Data.Enums;
 
 namespace Catalog.Host.Data.Entities;
 

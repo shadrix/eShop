@@ -1,7 +1,7 @@
 #pragma warning disable CS8618
-namespace Catalog.Host.Data.Entities;
+namespace Catalog.Host.Models.Dtos;
 
-public class CatalogType
+public class CatalogTypeDto
 {
     public int Id { get; set; }
 

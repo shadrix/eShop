@@ -1,4 +1,5 @@
-using Catalog.Host.Data.Enums;
+using Catalog.Host.Data.Entities;
+using Catalog.Host.Models.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

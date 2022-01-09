@@ -1,7 +1,6 @@
 #pragma warning disable CS8618
 using Catalog.Host.Data.Entities;
 using Catalog.Host.Data.EntityConfigurations;
-using Catalog.Host.Data.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Host.Data;

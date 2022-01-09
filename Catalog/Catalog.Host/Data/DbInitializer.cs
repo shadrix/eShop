@@ -1,5 +1,4 @@
 using Catalog.Host.Data.Entities;
-using Catalog.Host.Data.Enums;
 
 namespace Catalog.Host.Data;
 
