@@ -5,7 +5,6 @@ using Catalog.Host.Models.Dtos;
 using Catalog.Host.Models.Response;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services.Interfaces;
-using Microsoft.Extensions.Options;
 
 namespace Catalog.Host.Services;
 

@@ -13,9 +13,9 @@ public class CatalogItemDto
 
     public string PictureUrl { get; set; }
 
-    public Data.Entities.CatalogType CatalogType { get; set; }
+    public CatalogTypeDto CatalogType { get; set; }
 
-    public Data.Entities.CatalogBrand CatalogBrand { get; set; }
+    public CatalogBrandDto CatalogBrand { get; set; }
 
     public int AvailableStock { get; set; }
 }
