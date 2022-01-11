@@ -1,5 +1,6 @@
 using System.Net;
 using Catalog.Host.Data.Entities;
+using Catalog.Host.Models.Dtos;
 using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Response;
 using Catalog.Host.Services.Interfaces;
@@ -24,7 +25,7 @@ public class CatalogBffController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogItem>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogItemDto>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Items(PaginatedItemsRequest request)
     {
         var result = await _catalogService.GetCatalogItemsAsync(request.PageSize, request.PageIndex);
