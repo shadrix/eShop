@@ -34,7 +34,7 @@ public class CatalogItemServiceTest
     }
 
     [Fact]
-    public async Task CreateProductAsync_Success()
+    public async Task AddAsync_Success()
     {
         // arrange
         var testResult = 1;
@@ -56,7 +56,7 @@ public class CatalogItemServiceTest
     }
 
     [Fact]
-    public async Task CreateProductAsync_Failed()
+    public async Task AddAsync_Failed()
     {
         // arrange
         int? testResult = null;
