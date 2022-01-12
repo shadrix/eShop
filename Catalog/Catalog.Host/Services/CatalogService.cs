@@ -1,5 +1,3 @@
-using AutoMapper;
-using Catalog.Host.Configurations;
 using Catalog.Host.Data;
 using Catalog.Host.Models.Dtos;
 using Catalog.Host.Models.Response;
@@ -24,11 +22,16 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
         _mapper = mapper;
     }
 
-    public async Task<PaginatedItemsResponse<CatalogItemDto>> GetCatalogItemsAsync(int pageSize, int pageIndex)
+    public async Task<PaginatedItemsResponse<CatalogItemDto>?> GetCatalogItemsAsync(int pageSize, int pageIndex)
     {
         return await ExecuteSafe(async () =>
         {
             var result = await _catalogItemRepository.GetByPageAsync(pageIndex, pageSize);
+            if (result == null)
+            {
+                return null;
+            }
+
             return new PaginatedItemsResponse<CatalogItemDto>()
             {
                 Count = result.TotalCount,

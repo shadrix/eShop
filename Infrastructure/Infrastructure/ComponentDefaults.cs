@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Common;
+﻿namespace Infrastructure;
 
 public static class ComponentDefaults
 {

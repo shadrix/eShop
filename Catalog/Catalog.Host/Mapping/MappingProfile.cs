@@ -1,4 +1,3 @@
-using AutoMapper;
 using Catalog.Host.Data.Entities;
 using Catalog.Host.Models.Dtos;
 

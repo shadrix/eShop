@@ -1,6 +1,3 @@
-using Infrastructure.Common;
-using Microsoft.AspNetCore.Mvc;
-
 namespace Catalog.Host.Controllers;
 
 [ApiController]
