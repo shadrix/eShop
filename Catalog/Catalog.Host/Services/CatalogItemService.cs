@@ -17,7 +17,7 @@ public class CatalogItemService : BaseDataService<ApplicationDbContext>, ICatalo
         _catalogItemRepository = catalogItemRepository;
     }
 
-    public Task<int> CreateProductAsync(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
+    public Task<int?> Add(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
     {
         return ExecuteSafe(() => _catalogItemRepository.Add(name, description, price, availableStock, catalogBrandId, catalogTypeId, pictureFileName));
     }

@@ -35,9 +35,9 @@ public class CatalogItemRepository : ICatalogItemRepository
         return new PaginatedItems<CatalogItem>() { TotalCount = totalItems, Data = itemsOnPage };
     }
 
-    public async Task<int> Add(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
+    public async Task<int?> Add(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
     {
-        var item = _dbContext.CatalogItems.Add(new CatalogItem
+        var item = await _dbContext.AddAsync(new CatalogItem
         {
             CatalogBrandId = catalogBrandId,
             CatalogTypeId = catalogTypeId,

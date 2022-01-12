@@ -23,10 +23,10 @@ public class CatalogItemController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(AddItemResponse<int>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult> CreateProduct(CreateProductRequest request)
+    [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult> Add(CreateProductRequest request)
     {
-        var result = await _catalogItemService.CreateProductAsync(request.Name, request.Description, request.Price, request.AvailableStock, request.CatalogBrandId, request.CatalogTypeId, request.PictureFileName);
-        return Ok(new AddItemResponse<int>() { Id = result });
+        var result = await _catalogItemService.Add(request.Name, request.Description, request.Price, request.AvailableStock, request.CatalogBrandId, request.CatalogTypeId, request.PictureFileName);
+        return Ok(new AddItemResponse<int?>() { Id = result });
     }
 }
