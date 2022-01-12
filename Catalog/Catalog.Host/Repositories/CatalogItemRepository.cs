@@ -44,7 +44,7 @@ public class CatalogItemRepository : ICatalogItemRepository
             PictureFileName = pictureFileName,
             Price = price
         };
-        var item = _dbContext.Add(item1);
+        var item = await _dbContext.AddAsync(item1);
 
         await _dbContext.SaveChangesAsync();
 
