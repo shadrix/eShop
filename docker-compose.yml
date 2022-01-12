@@ -35,11 +35,3 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - 5433:5432
-  jenkins:
-    image: jenkins/jenkins:lts
-    privileged: true
-    user: root
-    ports:
-      - 8080:8080
-      - 50000:50000
-    container_name: jenkins
