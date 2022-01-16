@@ -9,7 +9,6 @@ services:
     environment:
        - ASPNETCORE_ENVIRONMENT=Development
        - ASPNETCORE_URLS=http://+:5000
-       - CdnHost=http://host.docker.internal
        - ConnectionString=server=host.docker.internal;port=5433;database=catalog;uid=postgres;password=postgres;
     depends_on:
       - postgres
@@ -33,6 +32,9 @@ services:
     container_name: lde.nginx
     ports:
       - 80:80
+    volumes:
+      - ./Proxy/gateway/nginx/conf.d:/etc/nginx/conf.d
+      - ./Proxy/assets:/var/www/assets
   pgadmin4:
     image: dpage/pgadmin4
     container_name: lde.pgadmin4

@@ -32,11 +32,4 @@ public class CatalogBffController : ControllerBase
         var result = await _catalogService.GetCatalogItemsAsync(request.PageSize, request.PageIndex, request.Filters);
         return Ok(result);
     }
-
-    [HttpGet]
-    [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
-    public IActionResult Items()
-    {
-        return Ok(_config.Value.ConnectionString);
-    }
 }
