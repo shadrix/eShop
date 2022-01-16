@@ -9,10 +9,25 @@ services:
     environment:
        - ASPNETCORE_ENVIRONMENT=Development
        - ASPNETCORE_URLS=http://+:5000
+       - Host=192.168.3.5
+       - ConnectionString:server=192.168.3.5;port=5433;database=catalog;uid=postgres;password=postgres;,
     depends_on:
       - postgres
     ports:
       - 5000:5000
+  web.mvc:
+    container_name: lde.web.mvc
+    build:
+      context: .
+      dockerfile: Web/MVC/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5001
+      - CatalogUrl=192.168.3.5:5000/api/v1/catalogbff,
+    depends_on:
+      - catalog.api
+    ports:
+      - 5001:5001
   nginx:
     image: nginx
     container_name: lde.nginx
