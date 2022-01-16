@@ -52,7 +52,12 @@ public class CatalogService : ICatalogService
             new SelectListItem()
             {
                 Value = "0",
-                Text = "brand"
+                Text = "brand 1"
+            },
+            new SelectListItem()
+            {
+                Value = "1",
+                Text = "brand 2"
             }
         };
 
@@ -67,7 +72,13 @@ public class CatalogService : ICatalogService
             new SelectListItem()
             {
                 Value = "0",
-                Text = "type"
+                Text = "type 1"
+            },
+            
+            new SelectListItem()
+            {
+                Value = "1",
+                Text = "type 2"
             }
         };
 

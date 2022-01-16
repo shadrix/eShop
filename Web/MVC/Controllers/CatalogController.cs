@@ -6,23 +6,29 @@ namespace MVC.Controllers;
 
 public class CatalogController : Controller
 {
-    private ICatalogService _catalogService;
+    private  readonly ICatalogService _catalogService;
 
-    public CatalogController(ICatalogService catalogService) =>
-        _catalogService = catalogService;
-    
-    public async Task<IActionResult> Index(int? brandFilterApplied, int? typesFilterApplied, int? page, int? itemsPage)
+    public CatalogController(ICatalogService catalogService)
     {
+        _catalogService = catalogService;
+    }
+
+    public async Task<IActionResult> Index(int? brandFilterApplied, int? typesFilterApplied, int? page, int? itemsPage)
+    {   
         page ??= 0;
         itemsPage ??= 9;
         
         var catalog = await _catalogService.GetCatalogItems(page.Value, itemsPage.Value, brandFilterApplied, typesFilterApplied);
+        if (catalog == null)
+        {
+            return View("Error");
+        }
         var info = new PaginationInfo()
         {
             ActualPage = page.Value,
             ItemsPerPage = catalog.Data.Count,
             TotalItems = catalog.Count,
-            TotalPages = (int)Math.Ceiling((decimal)((decimal)catalog.Count / itemsPage.Value))
+            TotalPages = (int)Math.Ceiling((decimal)catalog.Count / itemsPage.Value)
         };
         var vm = new IndexViewModel()
         {

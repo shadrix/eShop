@@ -9,6 +9,7 @@
                     asp-controller="Catalog"
                     asp-action="Index"
                     asp-route-page="@(Model.ActualPage -1)"
+                    asp-route-itemsPage="@(Model.ItemsPerPage)"
                     aria-label="Previous">
                     Previous
                 </a>
@@ -22,6 +23,7 @@
                     asp-controller="Catalog"
                     asp-action="Index"
                     asp-route-page="@(Model.ActualPage + 1)"
+                    asp-route-itemsPage="@(Model.ItemsPerPage)"
                     aria-label="Next">
                     Next
                 </a>
