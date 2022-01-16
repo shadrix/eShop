@@ -9,7 +9,7 @@ services:
     environment:
        - ASPNETCORE_ENVIRONMENT=Development
        - ASPNETCORE_URLS=http://+:5000
-       - Host=192.168.3.5
+       - CdnHost=http://192.168.3.5
        - ConnectionString:server=192.168.3.5;port=5433;database=catalog;uid=postgres;password=postgres;,
     depends_on:
       - postgres
@@ -23,7 +23,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5001
-      - CatalogUrl=192.168.3.5:5000/api/v1/catalogbff,
+      - CatalogUrl=http://host.docker.internal:5000/api/v1/catalogbff,
     depends_on:
       - catalog.api
     ports:

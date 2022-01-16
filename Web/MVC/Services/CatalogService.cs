@@ -1,6 +1,5 @@
-﻿using MVC.Models.Dtos;
+﻿using MVC.Dtos;
 using MVC.Models.Enums;
-using MVC.Models.Requests;
 using MVC.Services.Interfaces;
 using MVC.ViewModels;
 
@@ -21,29 +20,20 @@ public class CatalogService : ICatalogService
 
     public async Task<Catalog> GetCatalogItems(int page, int take, int? brand, int? type)
     {
-        var filters = new List<CatalogFilterDto>();
+        var filters = new Dictionary<CatalogTypeFilter, int>();
 
         if (brand.HasValue)
         {
-            filters.Add(new CatalogFilterDto()
-            {
-                Type = CatalogTypeFilter.Brand,
-                Value = brand.Value
-            });
-
+            filters.Add(CatalogTypeFilter.Brand, brand.Value);
         }
         
         if (type.HasValue)
         {
-            filters.Add(new CatalogFilterDto()
-            {
-                Type = CatalogTypeFilter.Type,
-                Value = type.Value
-            });
+            filters.Add(CatalogTypeFilter.Type, type.Value);
         }
 
-        var responseString = await _httpClient.PostAsJsonAsync(_settings.Value.CatalogUrl,
-            new CatalogPaginatedItemsRequest()
+        var responseString = await _httpClient.PostAsJsonAsync($"{_settings.Value.CatalogUrl}/items",
+            new PaginatedItemsRequest<CatalogTypeFilter>()
             {
                 PageIndex = page,
                 PageSize = take,

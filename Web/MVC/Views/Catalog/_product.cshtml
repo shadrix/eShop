@@ -1,9 +1,9 @@
 ﻿@model CatalogItem
 
 
-<form asp-controller="Cart" asp-action="AddToCart">
+<form>
 
-    <img class="esh-catalog-thumbnail" src="@Model.PictureUri" />
+    <img class="esh-catalog-thumbnail" src="@Model.PictureUrl" />
 
     <div class="esh-catalog-name">
         <span>@Model.Name</span>
