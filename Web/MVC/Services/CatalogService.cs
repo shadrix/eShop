@@ -8,10 +8,10 @@ namespace MVC.Services;
 public class CatalogService : ICatalogService
 {
     private readonly IOptions<AppSettings> _settings;
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientService _httpClient;
     private readonly ILogger<CatalogService> _logger;
 
-    public CatalogService(HttpClient httpClient, ILogger<CatalogService> logger, IOptions<AppSettings> settings)
+    public CatalogService(IHttpClientService httpClient, ILogger<CatalogService> logger, IOptions<AppSettings> settings)
     {
         _httpClient = httpClient;
         _settings = settings;
@@ -31,23 +31,17 @@ public class CatalogService : ICatalogService
         {
             filters.Add(CatalogTypeFilter.Type, type.Value);
         }
-
-        var responseString = await _httpClient.PostAsJsonAsync($"{_settings.Value.CatalogUrl}/items",
-            new PaginatedItemsRequest<CatalogTypeFilter>()
+        
+        var result = await _httpClient.SendAsync<Catalog, PaginatedItemsRequest<CatalogTypeFilter>>($"{_settings.Value.CatalogUrl}/items",
+           HttpMethod.Post, 
+           new PaginatedItemsRequest<CatalogTypeFilter>()
             {
                 PageIndex = page,
                 PageSize = take,
                 Filters = filters
             });
 
-        var result = await responseString.Content.ReadAsStringAsync();
-
-        var catalog = JsonSerializer.Deserialize<Catalog>(result, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
-
-        return catalog;
+        return result;
     }
 
     public async Task<IEnumerable<SelectListItem>> GetBrands()

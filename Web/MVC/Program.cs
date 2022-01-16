@@ -1,4 +1,3 @@
-using MVC;
 using MVC.Services;
 using MVC.Services.Interfaces;
 
@@ -10,7 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<AppSettings>(configuration);
 
-builder.Services.AddHttpClient<ICatalogService, CatalogService>();
+builder.Services.AddHttpClient();
+builder.Services.AddTransient<IHttpClientService, HttpClientService>();
+builder.Services.AddTransient<ICatalogService, CatalogService>();
 
 var app = builder.Build();
 

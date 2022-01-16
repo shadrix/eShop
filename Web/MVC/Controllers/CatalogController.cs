@@ -13,19 +13,23 @@ public class CatalogController : Controller
     
     public async Task<IActionResult> Index(int? brandFilterApplied, int? typesFilterApplied, int? page, int? itemsPage)
     {
-        var catalog = await _catalogService.GetCatalogItems(page ?? 0, itemsPage ?? 9, brandFilterApplied, typesFilterApplied);
+        page ??= 0;
+        itemsPage ??= 9;
+        
+        var catalog = await _catalogService.GetCatalogItems(page.Value, itemsPage.Value, brandFilterApplied, typesFilterApplied);
+        var info = new PaginationInfo()
+        {
+            ActualPage = page.Value,
+            ItemsPerPage = catalog.Data.Count,
+            TotalItems = catalog.Count,
+            TotalPages = (int)Math.Ceiling((decimal)((decimal)catalog.Count / itemsPage.Value))
+        };
         var vm = new IndexViewModel()
         {
             CatalogItems = catalog.Data,
             Brands = await _catalogService.GetBrands(),
             Types = await _catalogService.GetTypes(),
-            PaginationInfo = new PaginationInfo()
-            {
-                ActualPage = page ?? 0,
-                ItemsPerPage = catalog.Data.Count,
-                TotalItems = catalog.Count,
-                TotalPages = (int)Math.Ceiling((decimal)((decimal)catalog.Count / itemsPage))
-            }
+            PaginationInfo = info
         };
 
         vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";

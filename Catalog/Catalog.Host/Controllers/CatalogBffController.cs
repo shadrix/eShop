@@ -1,3 +1,4 @@
+using Catalog.Host.Configurations;
 using Catalog.Host.Models.Dtos;
 using Catalog.Host.Models.Enums;
 using Catalog.Host.Models.Requests;
@@ -12,13 +13,16 @@ public class CatalogBffController : ControllerBase
 {
     private readonly ILogger<CatalogBffController> _logger;
     private readonly ICatalogService _catalogService;
+    private readonly IOptions<CatalogConfig> _config;
 
     public CatalogBffController(
         ILogger<CatalogBffController> logger,
-        ICatalogService catalogService)
+        ICatalogService catalogService,
+        IOptions<CatalogConfig> config)
     {
         _logger = logger;
         _catalogService = catalogService;
+        _config = config;
     }
 
     [HttpPost]
@@ -27,5 +31,12 @@ public class CatalogBffController : ControllerBase
     {
         var result = await _catalogService.GetCatalogItemsAsync(request.PageSize, request.PageIndex, request.Filters);
         return Ok(result);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+    public IActionResult Items()
+    {
+        return Ok(_config.Value.ConnectionString);
     }
 }

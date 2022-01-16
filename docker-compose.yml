@@ -9,8 +9,8 @@ services:
     environment:
        - ASPNETCORE_ENVIRONMENT=Development
        - ASPNETCORE_URLS=http://+:5000
-       - CdnHost=http://192.168.3.5
-       - ConnectionString:server=192.168.3.5;port=5433;database=catalog;uid=postgres;password=postgres;,
+       - CdnHost=http://host.docker.internal
+       - ConnectionString=server=host.docker.internal;port=5433;database=catalog;uid=postgres;password=postgres;
     depends_on:
       - postgres
     ports:
