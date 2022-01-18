@@ -4,7 +4,7 @@ using Catalog.Host.Models.Dtos;
 using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Response;
 using Catalog.Host.Services.Interfaces;
-using Infrastructure.Common;
+using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.Host.Controllers;

@@ -1,4 +1,4 @@
-using Infrastructure.Common;
+using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.Host.Controllers;
