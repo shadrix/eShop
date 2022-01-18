@@ -24,10 +24,10 @@ public class CatalogTypeEntityTypeConfiguration
 
         builder.HasData(new List<CatalogType>()
         {
-            new CatalogType() { Type = "Mug" },
-            new CatalogType() { Type = "T-Shirt" },
-            new CatalogType() { Type = "Sheet" },
-            new CatalogType() { Type = "USB Memory Stick" }
+            new CatalogType() { Id = 1, Type = "Mug" },
+            new CatalogType() { Id = 2, Type = "T-Shirt" },
+            new CatalogType() { Id = 3, Type = "Sheet" },
+            new CatalogType() { Id = 4, Type = "USB Memory Stick" }
         });
     }
 }
