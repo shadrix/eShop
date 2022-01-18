@@ -17,11 +17,6 @@ public class HttpGlobalExceptionFilter : IExceptionFilter
 
     public void OnException(ExceptionContext context)
     {
-        _logger.LogError(
-            new EventId(context.Exception.HResult),
-            context.Exception,
-            context.Exception.Message);
-
         if (context.Exception is BusinessException ex)
         {
             var problemDetails = new ValidationProblemDetails()
@@ -35,6 +30,13 @@ public class HttpGlobalExceptionFilter : IExceptionFilter
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
             context.ExceptionHandled = true;
+        }
+        else
+        {
+            _logger.LogError(
+                new EventId(context.Exception.HResult),
+                context.Exception,
+                context.Exception.Message);
         }
     }
 }
