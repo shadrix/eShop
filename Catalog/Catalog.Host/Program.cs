@@ -1,13 +1,10 @@
-using AutoMapper;
 using Catalog.Host.Configurations;
 using Catalog.Host.Data;
-using Catalog.Host.Mapping;
 using Catalog.Host.Repositories;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services;
 using Catalog.Host.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 var configuration = GetConfiguration();
 
@@ -35,8 +32,6 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 
-CreateDbIfNotExists(app);
-
 app.Run();
 
 IConfiguration GetConfiguration()
@@ -47,23 +42,4 @@ IConfiguration GetConfiguration()
         .AddEnvironmentVariables();
 
     return builder.Build();
-}
-
-void CreateDbIfNotExists(IHost host)
-{
-    using (var scope = host.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        try
-        {
-            var context = services.GetRequiredService<ApplicationDbContext>();
-
-            DbInitializer.Initialize(context).Wait();
-        }
-        catch (Exception ex)
-        {
-            var logger = services.GetRequiredService<ILogger<Program>>();
-            logger.LogError(ex, "An error occurred creating the DB.");
-        }
-    }
 }
