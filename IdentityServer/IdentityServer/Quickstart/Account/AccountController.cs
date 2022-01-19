@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer;
+using Microsoft.Extensions.Options;
 
 namespace IdentityServer4.Quickstart.UI
 {
@@ -33,13 +35,13 @@ namespace IdentityServer4.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
+        private readonly AppSettings _config;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
-            IEventService events,
-            TestUserStore users = null)
+            IEventService events, IOptions<AppSettings> config, TestUserStore users = null)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
@@ -49,6 +51,7 @@ namespace IdentityServer4.Quickstart.UI
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
+            _config = config.Value;
         }
 
         /// <summary>
@@ -94,7 +97,7 @@ namespace IdentityServer4.Quickstart.UI
                     {
                         // if the client is PKCE then we assume it's native, so this change in how to
                         // return the response is for better UX for the end user.
-                        return View("Redirect", new RedirectViewModel { RedirectUrl = "http://192.168.1.71:5001/" });
+                        return View("Redirect", new RedirectViewModel { RedirectUrl = _config.MvcUrl });
                     }
 
                     return Redirect(model.ReturnUrl);
@@ -326,7 +329,7 @@ namespace IdentityServer4.Quickstart.UI
             var vm = new LoggedOutViewModel
             {
                 AutomaticRedirectAfterSignOut = true,
-                PostLogoutRedirectUri = "http://192.168.1.71:5001/",
+                PostLogoutRedirectUri = _config.MvcUrl,
                 ClientName = string.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
                 SignOutIframeUrl = logout?.SignOutIFrameUrl,
                 LogoutId = logoutId
