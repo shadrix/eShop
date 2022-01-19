@@ -20,14 +20,5 @@ public class CatalogBrandEntityTypeConfiguration
         builder.Property(cb => cb.Brand)
             .IsRequired()
             .HasMaxLength(100);
-
-        builder.HasData(new List<CatalogBrand>()
-        {
-            new CatalogBrand() { Id = 1, Brand = "Azure" },
-            new CatalogBrand() { Id = 2, Brand = ".NET" },
-            new CatalogBrand() { Id = 3, Brand = "Visual Studio" },
-            new CatalogBrand() { Id = 4, Brand = "SQL Server" },
-            new CatalogBrand() { Id = 5, Brand = "Other" }
-        });
     }
 }

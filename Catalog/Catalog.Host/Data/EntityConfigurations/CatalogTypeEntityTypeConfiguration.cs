@@ -21,13 +21,5 @@ public class CatalogTypeEntityTypeConfiguration
         builder.Property(cb => cb.Type)
             .IsRequired()
             .HasMaxLength(100);
-
-        builder.HasData(new List<CatalogType>()
-        {
-            new CatalogType() { Id = 1, Type = "Mug" },
-            new CatalogType() { Id = 2, Type = "T-Shirt" },
-            new CatalogType() { Id = 3, Type = "Sheet" },
-            new CatalogType() { Id = 4, Type = "USB Memory Stick" }
-        });
     }
 }
