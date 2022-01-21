@@ -45,16 +45,14 @@ namespace IdentityServer
             {
                 new Client
                 {
-                    ClientId = "pkce_client",
+                    ClientId = "mvc_pkce",
                     ClientName = "MVC PKCE Client",
                     AllowedGrantTypes = GrantTypes.Code,
                     ClientSecrets = {new Secret("secret".Sha256())},
                     RedirectUris = {Program.AppSettings.GetConnectionString("MvcUrl")},
                     AllowedScopes = {"openid", "profile", "mvc"},
-
                     RequirePkce = true,
-                    RequireConsent = false,
-                    AllowPlainTextPkce = false
+                    RequireConsent = false
                 },
                 new Client
                 {
