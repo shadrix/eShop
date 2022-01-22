@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityModel" Version="3.10.5" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="IdentityServer4" Version="2.3.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.0" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="3.1.4" />
+    <PackageReference Include="IdentityServer4.Storage" Version="3.1.4" />
+    <PackageReference Include="IdentityServer4" Version="3.1.4" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.18.0" />
   </ItemGroup>
 
 </Project>

@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MVC.Services;
 using MVC.Services.Interfaces;
@@ -15,15 +16,19 @@ var identityUrl = configuration.GetValue<string>("IdentityUrl");
 var callBackUrl = configuration.GetValue<string>("CallBackUrl");
 var sessionCookieLifetime = configuration.GetValue("SessionCookieLifetimeMinutes", 60);
 
+JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = "oidc";
     })
     .AddCookie(setup => setup.ExpireTimeSpan = TimeSpan.FromMinutes(sessionCookieLifetime))
     .AddOpenIdConnect(options =>
     {
         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.Authority = identityUrl;
+        
         options.SignedOutRedirectUri = callBackUrl;
         options.ClientId = "mvc_pkce";
         options.ClientSecret = "secret";
@@ -31,6 +36,7 @@ builder.Services.AddAuthentication(options =>
         options.SaveTokens = true;
         options.GetClaimsFromUserInfoEndpoint = true;
         options.RequireHttpsMetadata = false;
+        options.UsePkce = true;
         options.Scope.Add("openid");
         options.Scope.Add("profile");
         options.Scope.Add("mvc");
@@ -54,7 +60,13 @@ if (!app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 
+app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
+
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute("default", "{controller=Catalog}/{action=Index}/{id?}");

@@ -1,6 +1,7 @@
-﻿namespace IdentityServer;
-
-public class AppSettings
+﻿namespace IdentityServer
 {
-    public string MvcUrl { get; set; }
+    public class AppSettings
+    {
+        public string MvcUrl { get; set; }
+    }
 }

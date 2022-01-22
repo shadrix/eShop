@@ -12,7 +12,6 @@ public class AccountController : Controller
         _logger = logger;
     }
 
-    [Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
     public async Task<IActionResult> SignIn(string returnUrl)
     {
         var user = User as ClaimsPrincipal;
