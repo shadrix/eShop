@@ -39,7 +39,7 @@ namespace IdentityServer
             };
         }
 
-        public static IEnumerable<Client> GetClients()
+        public static IEnumerable<Client> GetClients(IConfiguration configuration)
         {
             return new[]
             {
@@ -49,7 +49,7 @@ namespace IdentityServer
                     ClientName = "MVC PKCE Client",
                     AllowedGrantTypes = GrantTypes.Code,
                     ClientSecrets = {new Secret("secret".Sha256())},
-                    RedirectUris = {Program.AppSettings.GetConnectionString("MvcUrl")},
+                    RedirectUris = { $"{configuration["MvcUrl"]}/signin-oidc"},
                     AllowedScopes = {"openid", "profile", "mvc"},
                     RequirePkce = true,
                     RequireConsent = false

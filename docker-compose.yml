@@ -23,8 +23,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5001
       - CatalogUrl=http://host.docker.internal:5000/api/v1/catalogbff
-      - IdentityUrl=http://host.docker.internal:5002
-      - CallBackUrl=http://host.docker.internal:5001/
+      - IdentityUrl=http://www.alevelwebsite.com:5002
+      - CallBackUrl=http://www.alevelwebsite.com/
+      - RedirectUri=http://www.alevelwebsite.com/signin-oidc
     depends_on:
       - catalog.api
     ports:
@@ -37,7 +38,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5002
-      - MvcUrl=http://host.docker.internal:5001;
+      - MvcUrl=http://www.alevelwebsite.com
     ports:
       - 5002:5002
   nginx:

@@ -1,5 +1,4 @@
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MVC.Services;
 using MVC.Services.Interfaces;
 using MVC.ViewModels;
@@ -14,6 +13,7 @@ builder.Services.AddControllersWithViews();
 
 var identityUrl = configuration.GetValue<string>("IdentityUrl");
 var callBackUrl = configuration.GetValue<string>("CallBackUrl");
+var redirectUrl = configuration.GetValue<string>("CallBackUrl");
 var sessionCookieLifetime = configuration.GetValue("SessionCookieLifetimeMinutes", 60);
 
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
@@ -28,7 +28,11 @@ builder.Services.AddAuthentication(options =>
     {
         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.Authority = identityUrl;
-        
+        options.Events.OnRedirectToIdentityProvider = async n =>
+        {
+            n.ProtocolMessage.RedirectUri = callBackUrl + "signin-oidc";
+            await Task.FromResult(0);
+        };
         options.SignedOutRedirectUri = callBackUrl;
         options.ClientId = "mvc_pkce";
         options.ClientSecret = "secret";
