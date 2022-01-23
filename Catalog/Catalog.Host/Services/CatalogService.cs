@@ -25,7 +25,7 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
 
     public async Task<PaginatedItemsResponse<CatalogItemDto>?> GetCatalogItemsAsync(int pageSize, int pageIndex, Dictionary<CatalogTypeFilter, int>? filters)
     {
-        return await ExecuteSafe(async () =>
+        return await ExecuteSafeAsync(async () =>
         {
             int? brandFilter = null;
             int? typeFilter = null;
