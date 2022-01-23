@@ -1,4 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
+using Infrastructure.Identity;
+using Infrastructure.Services;
+using Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using MVC.Services;
 using MVC.Services.Interfaces;

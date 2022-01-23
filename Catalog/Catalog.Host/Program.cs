@@ -5,6 +5,7 @@ using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services;
 using Catalog.Host.Services.Interfaces;
 using Infrastructure.Filters;
+using Infrastructure.Identity;
 
 var configuration = GetConfiguration();
 
@@ -17,7 +18,16 @@ builder.Services.AddControllers(options =>
     .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
 
 builder.Services.Configure<CatalogConfig>(configuration);
+
 builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<ClientConfig>(configuration);
+builder.Services.Configure<AuthorizationConfig>(configuration);
+
+var auth = configuration.GetValue<AuthorizationConfig>("Authorization");
+
+builder.Services.AddAuthorization(auth);
+
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddTransient<ICatalogItemRepository, CatalogItemRepository>();

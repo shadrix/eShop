@@ -19,7 +19,7 @@ namespace IdentityServer
         {
             return new ApiResource[]
             {
-                new ApiResource("mvc")
+                new ApiResource("alevelwebsite.com")
                 {
                     Scopes = new List<Scope>
                     {
@@ -31,9 +31,7 @@ namespace IdentityServer
                     Scopes = new List<Scope>
                     {
                         new Scope("catalog.catalogbff"),
-                        new Scope("catalog.catalogbrand"),
                         new Scope("catalog.catalogitem"),
-                        new Scope("catalog.catalogtype"),
                     },
                 }
             };
@@ -69,6 +67,19 @@ namespace IdentityServer
 
                     // scopes that client has access to
                     AllowedScopes = { "catalog.catalogbff" }
+                },
+                new Client
+                {
+                    ClientId = "catalog",
+
+                    // no interactive user, use the clientid/secret for authentication
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+
+                    // secret for authentication
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
                 }
             };
         }
