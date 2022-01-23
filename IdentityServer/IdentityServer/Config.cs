@@ -80,7 +80,22 @@ namespace IdentityServer
                     {
                         new Secret("secret".Sha256())
                     },
-                }
+                },
+                new Client
+                {
+                    ClientId = "catalogswaggerui",
+                    ClientName = "Catalog Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{configuration["CatalogApi"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{configuration["CatalogApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "mvc", "catalog.catalogbff", "catalog.catalogitem"
+                    }
+                },
             };
         }
     }

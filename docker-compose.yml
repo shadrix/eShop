@@ -10,7 +10,8 @@ services:
        - ASPNETCORE_ENVIRONMENT=Development
        - ASPNETCORE_URLS=http://+:5000
        - ConnectionString=server=host.docker.internal;port=5433;database=catalog;uid=postgres;password=postgres;
-       - Authorization__Authority=http://host.docker.internal:5002
+       - Authorization__Authority=http://www.alevelwebsite.com:5002
+       - PathBase=http://www.alevelwebsite.com:5000
     depends_on:
       - postgres
     ports:
@@ -24,7 +25,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5001
       - CatalogUrl=http://host.docker.internal:5000/api/v1/catalogbff
-      - Authorization__Authority=http://host.docker.internal:5002
+      - Authorization__Authority=http://www.alevelwebsite.com:5002
       - IdentityUrl=http://www.alevelwebsite.com:5002
       - CallBackUrl=http://www.alevelwebsite.com/
       - RedirectUri=http://www.alevelwebsite.com/signin-oidc
@@ -42,6 +43,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5002
       - MvcUrl=http://www.alevelwebsite.com
+      - CatalogApi=http://www.alevelwebsite.com:5000
     ports:
       - 5002:5002
   nginx:

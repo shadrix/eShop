@@ -1,3 +1,4 @@
+using Catalog.Host;
 using Catalog.Host.Configurations;
 using Catalog.Host.Data;
 using Catalog.Host.Repositories;
@@ -6,6 +7,7 @@ using Catalog.Host.Services;
 using Catalog.Host.Services.Interfaces;
 using Infrastructure.Extensions;
 using Infrastructure.Filters;
+using Microsoft.OpenApi.Models;
 
 var configuration = GetConfiguration();
 
@@ -17,7 +19,37 @@ builder.Services.AddControllers(options =>
     })
     .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "eShop- Catalog HTTP API",
+        Version = "v1",
+        Description = "The Catalog Service HTTP API"
+    });
+
+    var authority = configuration["Authorization:Authority"];
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.OAuth2,
+        Flows = new OpenApiOAuthFlows()
+        {
+            Implicit = new OpenApiOAuthFlow()
+            {
+                AuthorizationUrl = new Uri($"{authority}/connect/authorize"),
+                TokenUrl = new Uri($"{authority}/connect/token"),
+                Scopes = new Dictionary<string, string>()
+                {
+                    { "mvc", "website" },
+                    { "catalog.catalogbff", "catalog.catalogbff" },
+                    { "catalog.catalogitem", "catalog.catalogitem" }
+                }
+            }
+        }
+    });
+
+    options.OperationFilter<AuthorizeCheckOperationFilter>();
+});
 
 builder.AddConfiguration();
 builder.Services.Configure<CatalogConfig>(configuration);
@@ -46,8 +78,14 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwagger()
+    .UseSwaggerUI(setup =>
+    {
+        setup.SwaggerEndpoint($"{configuration["PathBase"]}/swagger/v1/swagger.json", "Catalog.API V1");
+        setup.OAuthClientId("catalogswaggerui");
+        setup.OAuthAppName("Catalog Swagger UI");
+    });
+
 app.UseRouting();
 app.UseCors("CorsPolicy");
 
