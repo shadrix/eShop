@@ -1,4 +1,4 @@
-namespace Infrastructure.Identity;
+namespace Infrastructure.Configuration;
 
 public class AuthorizationConfig
 {

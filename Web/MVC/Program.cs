@@ -1,8 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
+using Infrastructure.Configuration;
+using Infrastructure.Extensions;
 using Infrastructure.Identity;
 using Infrastructure.Services;
 using Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 using MVC.Services;
 using MVC.Services.Interfaces;
 using MVC.ViewModels;
@@ -14,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.AddConfiguration();
 
 var identityUrl = configuration.GetValue<string>("IdentityUrl");
 var callBackUrl = configuration.GetValue<string>("CallBackUrl");
@@ -47,6 +51,11 @@ builder.Services.AddAuthentication(options =>
         options.Scope.Add("openid");
         options.Scope.Add("profile");
         options.Scope.Add("mvc");
+        
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false
+        };
     });
 
 

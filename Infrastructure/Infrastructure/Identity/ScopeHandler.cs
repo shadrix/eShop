@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Routing;
 
@@ -30,7 +31,9 @@ public class ScopeHandler : AuthorizationHandler<ScopeRequirement>
 
     private string? GetTargetScope(AuthorizationHandlerContext context)
     {
-        var routeEndpoint = context.Resource as RouteEndpoint;
+        var httpContext = (HttpContext)context.Resource!;
+
+        var routeEndpoint = httpContext.GetEndpoint();
         var descriptor = routeEndpoint?.Metadata
             .OfType<ControllerActionDescriptor>()
             .SingleOrDefault();

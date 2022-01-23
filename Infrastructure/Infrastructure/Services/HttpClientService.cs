@@ -1,5 +1,6 @@
 using System.Text;
 using IdentityModel.Client;
+using Infrastructure.Configuration;
 using Infrastructure.Identity;
 using Infrastructure.Services.Interfaces;
 using Microsoft.Extensions.Options;
@@ -27,13 +28,9 @@ public class HttpClientService : IHttpClientService
     {
         var client = _clientFactory.CreateClient();
 
-        // discover endpoints from metadata
-        var disco = await client.GetDiscoveryDocumentAsync(_authConfig.Authority);
-
-        // request token
         var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
         {
-            Address = disco.TokenEndpoint,
+            Address = $"{_authConfig.Authority}/connect/token",
 
             ClientId = _clientConfig.Id,
             ClientSecret = _clientConfig.Secret

@@ -27,7 +27,7 @@ namespace IdentityServer
                 .AddInMemoryApiResources(Config.GetApis())
                 .AddInMemoryClients(Config.GetClients(configuration))
                 .AddTestUsers(TestUsers.Users)
-                .AddDeveloperSigningCredential(false);
+                .AddDeveloperSigningCredential();
         }
 
         public void Configure(IApplicationBuilder app)

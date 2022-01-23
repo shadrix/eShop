@@ -66,7 +66,7 @@ namespace IdentityServer
                     },
 
                     // scopes that client has access to
-                    AllowedScopes = { "catalog.catalogbff" }
+                    AllowedScopes = { "mvc" }
                 },
                 new Client
                 {

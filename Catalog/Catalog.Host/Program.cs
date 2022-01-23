@@ -4,8 +4,8 @@ using Catalog.Host.Repositories;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services;
 using Catalog.Host.Services.Interfaces;
+using Infrastructure.Extensions;
 using Infrastructure.Filters;
-using Infrastructure.Identity;
 
 var configuration = GetConfiguration();
 
@@ -17,16 +17,12 @@ builder.Services.AddControllers(options =>
     })
     .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
 
-builder.Services.Configure<CatalogConfig>(configuration);
-
 builder.Services.AddSwaggerGen();
 
-builder.Services.Configure<ClientConfig>(configuration);
-builder.Services.Configure<AuthorizationConfig>(configuration);
+builder.AddConfiguration();
+builder.Services.Configure<CatalogConfig>(configuration);
 
-var auth = configuration.GetValue<AuthorizationConfig>("Authorization");
-
-builder.Services.AddAuthorization(auth);
+builder.Services.AddAuthorization(configuration);
 
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -54,6 +50,10 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseRouting();
 app.UseCors("CorsPolicy");
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapDefaultControllerRoute();
