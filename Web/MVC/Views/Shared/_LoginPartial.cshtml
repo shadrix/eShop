@@ -2,15 +2,14 @@
 
 @inject IIdentityParser<ApplicationUser> UserManager
 
-@*@if (Context.User.Identity.IsAuthenticated)*@
-@if (User.FindFirst(x => x.Type == "preferred_username") != null)
+@if (Context.User.Identity.IsAuthenticated)
 {
     <section class="col-lg-4 col-md-5 col-xs-12">
         <div class="esh-identity">
             <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm" class="navbar-right">
                 <section class="esh-identity-section">
 
-                    <div class="esh-identity-name">@User.FindFirst(x => x.Type == "preferred_username").Value</div>
+                    <div class="esh-identity-name">@UserManager.Parse(User).Name</div>
                     <img class="esh-identity-image" src="~/images/arrow-down.png">
                 </section>
 

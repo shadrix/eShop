@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using MVC.Services;
 using MVC.Services.Interfaces;
 using MVC.ViewModels;
@@ -13,15 +14,14 @@ builder.Services.AddControllersWithViews();
 
 var identityUrl = configuration.GetValue<string>("IdentityUrl");
 var callBackUrl = configuration.GetValue<string>("CallBackUrl");
-var redirectUrl = configuration.GetValue<string>("CallBackUrl");
+var redirectUrl = configuration.GetValue<string>("RedirectUri");
 var sessionCookieLifetime = configuration.GetValue("SessionCookieLifetimeMinutes", 60);
 
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 builder.Services.AddAuthentication(options =>
     {
-        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = "oidc";
+        options.DefaultScheme = OpenIdConnectDefaults.AuthenticationScheme;
     })
     .AddCookie(setup => setup.ExpireTimeSpan = TimeSpan.FromMinutes(sessionCookieLifetime))
     .AddOpenIdConnect(options =>
@@ -30,7 +30,7 @@ builder.Services.AddAuthentication(options =>
         options.Authority = identityUrl;
         options.Events.OnRedirectToIdentityProvider = async n =>
         {
-            n.ProtocolMessage.RedirectUri = callBackUrl + "signin-oidc";
+            n.ProtocolMessage.RedirectUri = redirectUrl;
             await Task.FromResult(0);
         };
         options.SignedOutRedirectUri = callBackUrl;

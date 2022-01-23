@@ -1,23 +1,30 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using MVC.Services;
+using MVC.Services.Interfaces;
+using MVC.ViewModels;
 
 namespace MVC.Controllers;
 
-[Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
+[Authorize]
 public class AccountController : Controller
 {
     private readonly ILogger<AccountController> _logger;
+    private readonly IIdentityParser<ApplicationUser> _identityParser;
 
-    public AccountController(ILogger<AccountController> logger)
+    public AccountController(
+        ILogger<AccountController> logger,
+        IIdentityParser<ApplicationUser> identityParser)
     {
         _logger = logger;
+        _identityParser = identityParser;
     }
 
-    public async Task<IActionResult> SignIn(string returnUrl)
+    public async Task<IActionResult> SignIn()
     {
-        var user = User as ClaimsPrincipal;
+        var user = _identityParser.Parse(User);
         var token = await HttpContext.GetTokenAsync("access_token");
 
-        _logger.LogInformation($"User {user} authenticated");
+        _logger.LogInformation($"User {user.Name} authenticated");
 
         if (token != null)
         {
