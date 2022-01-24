@@ -19,7 +19,7 @@ public class AccountController : Controller
         _identityParser = identityParser;
     }
 
-    public async Task<IActionResult> SignIn()
+    public IActionResult SignIn()
     {
         var user = _identityParser.Parse(User);
 
