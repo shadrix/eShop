@@ -2,6 +2,7 @@
 Update your OS hosts file like this
 
 127.0.0.1 www.alevelwebsite.com
+your_current_ip www.alevelwebsite.com
 
 #docker
 docker-compose build --no-cache
