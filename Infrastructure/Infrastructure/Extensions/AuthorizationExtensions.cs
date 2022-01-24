@@ -44,7 +44,7 @@ public static class AuthorizationExtensions
             options.AddPolicy(AuthPolicy.AllowEndUserPolicy, policy =>
             {
                     policy.AuthenticationSchemes.Add(AuthScheme.Site);
-                    policy.Requirements.Add(new DenyAnonymousAuthorizationRequirement());
+                    policy.RequireClaim(JwtRegisteredClaimNames.Sub);
             });
             options.AddPolicy(AuthPolicy.AllowClientPolicy, policy =>
             {

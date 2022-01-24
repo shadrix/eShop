@@ -22,15 +22,9 @@ public class AccountController : Controller
     public async Task<IActionResult> SignIn()
     {
         var user = _identityParser.Parse(User);
-        var token = await HttpContext.GetTokenAsync("access_token");
 
         _logger.LogInformation($"User {user.Name} authenticated");
-
-        if (token != null)
-        {
-            ViewData["access_token"] = token;
-        }
-
+        
         // "Catalog" because UrlHelper doesn't support nameof() for controllers
         // https://github.com/aspnet/Mvc/issues/5853
         return RedirectToAction(nameof(CatalogController.Index), "Catalog");

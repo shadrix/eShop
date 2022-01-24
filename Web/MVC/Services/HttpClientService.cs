@@ -1,42 +1,32 @@
-using System.Text;
 using IdentityModel.Client;
 using Infrastructure.Configuration;
-using Infrastructure.Identity;
-using Infrastructure.Services.Interfaces;
-using Microsoft.Extensions.Options;
+using MVC.Services.Interfaces;
 using Newtonsoft.Json;
 
-namespace Infrastructure.Services;
+namespace MVC.Services;
 
 public class HttpClientService : IHttpClientService
 {
     private readonly IHttpClientFactory _clientFactory;
-    private readonly AuthorizationConfig _authConfig;
-    private readonly ClientConfig _clientConfig;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public HttpClientService(
         IHttpClientFactory clientFactory,
-        IOptions<ClientConfig> clientConfig,
-        IOptions<AuthorizationConfig> authConfig)
+        IHttpContextAccessor httpContextAccessor)
     {
         _clientFactory = clientFactory;
-        _authConfig = authConfig.Value;
-        _clientConfig = clientConfig.Value;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<TResponse> SendAsync<TResponse, TRequest>(string url, HttpMethod method, TRequest? content)
     {
         var client = _clientFactory.CreateClient();
 
-        var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+        var token = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
+        if (!string.IsNullOrEmpty(token))
         {
-            Address = $"{_authConfig.Authority}/connect/token",
-
-            ClientId = _clientConfig.Id,
-            ClientSecret = _clientConfig.Secret
-        });
-
-        client.SetBearerToken(tokenResponse.AccessToken);
+            client.SetBearerToken(token);
+        }
 
         var httpMessage = new HttpRequestMessage();
         httpMessage.RequestUri = new Uri(url);

@@ -54,22 +54,6 @@ namespace IdentityServer
                 },
                 new Client
                 {
-                    ClientId = "mvc_client",
-
-                    // no interactive user, use the clientid/secret for authentication
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                    // secret for authentication
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-
-                    // scopes that client has access to
-                    AllowedScopes = { "mvc" }
-                },
-                new Client
-                {
                     ClientId = "catalog",
 
                     // no interactive user, use the clientid/secret for authentication

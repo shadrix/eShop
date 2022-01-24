@@ -24,8 +24,6 @@ var callBackUrl = configuration.GetValue<string>("CallBackUrl");
 var redirectUrl = configuration.GetValue<string>("RedirectUri");
 var sessionCookieLifetime = configuration.GetValue("SessionCookieLifetimeMinutes", 60);
 
-JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
-
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultScheme = OpenIdConnectDefaults.AuthenticationScheme;
@@ -62,6 +60,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.Configure<AppSettings>(configuration);
 
 builder.Services.AddHttpClient();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IHttpClientService, HttpClientService>();
 builder.Services.AddTransient<ICatalogService, CatalogService>();
 builder.Services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
