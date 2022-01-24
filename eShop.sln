@@ -54,6 +54,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "conf.d", "conf.d", "{F6BEB0
 		Proxy\gateway\nginx\conf.d\default.conf = Proxy\gateway\nginx\conf.d\default.conf
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityServer", "IdentityServer", "{5754DE66-007D-4B94-9574-36763DDD4516}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer", "IdentityServer\IdentityServer\IdentityServer.csproj", "{ED59CFCD-8450-4790-B736-554C5493A46F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +84,10 @@ Global
 		{C07F6930-2F6F-460F-99AD-2EFCB3BD9715}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C07F6930-2F6F-460F-99AD-2EFCB3BD9715}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C07F6930-2F6F-460F-99AD-2EFCB3BD9715}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED59CFCD-8450-4790-B736-554C5493A46F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED59CFCD-8450-4790-B736-554C5493A46F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED59CFCD-8450-4790-B736-554C5493A46F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED59CFCD-8450-4790-B736-554C5493A46F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6A8E9683-762E-4E83-BD60-75822AC8265D} = {E769E2A0-66AF-44D6-9300-C45D3889E06A}
@@ -92,5 +100,6 @@ Global
 		{2167BBAD-8899-47A8-8AFE-DEA70EF8611B} = {54C74A1B-6D46-4CC6-A8B4-39B1302EDFDE}
 		{5E71A157-50BB-439B-8F59-C17B9200EBFA} = {2167BBAD-8899-47A8-8AFE-DEA70EF8611B}
 		{F6BEB0F3-B23D-4D37-A01A-87D057796F2E} = {5E71A157-50BB-439B-8F59-C17B9200EBFA}
+		{ED59CFCD-8450-4790-B736-554C5493A46F} = {5754DE66-007D-4B94-9574-36763DDD4516}
 	EndGlobalSection
 EndGlobal

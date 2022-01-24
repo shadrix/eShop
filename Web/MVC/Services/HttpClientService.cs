@@ -1,3 +1,5 @@
+using IdentityModel.Client;
+using Infrastructure.Configuration;
 using MVC.Services.Interfaces;
 using Newtonsoft.Json;
 
@@ -6,15 +8,25 @@ namespace MVC.Services;
 public class HttpClientService : IHttpClientService
 {
     private readonly IHttpClientFactory _clientFactory;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public HttpClientService(IHttpClientFactory clientFactory)
+    public HttpClientService(
+        IHttpClientFactory clientFactory,
+        IHttpContextAccessor httpContextAccessor)
     {
         _clientFactory = clientFactory;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<TResponse> SendAsync<TResponse, TRequest>(string url, HttpMethod method, TRequest? content)
     {
         var client = _clientFactory.CreateClient();
+
+        var token = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
+        if (!string.IsNullOrEmpty(token))
+        {
+            client.SetBearerToken(token);
+        }
 
         var httpMessage = new HttpRequestMessage();
         httpMessage.RequestUri = new Uri(url);
@@ -32,7 +44,7 @@ public class HttpClientService : IHttpClientService
         {
             var resultContent = await result.Content.ReadAsStringAsync();
             var response = JsonConvert.DeserializeObject<TResponse>(resultContent);
-            return response;
+            return response!;
         }
 
         return default(TResponse) !;

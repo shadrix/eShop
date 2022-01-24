@@ -1,4 +1,5 @@
-﻿using MVC.Dtos;
+﻿using Infrastructure.Services.Interfaces;
+using MVC.Dtos;
 using MVC.Models.Enums;
 using MVC.Services.Interfaces;
 using MVC.ViewModels;
@@ -60,7 +61,9 @@ public class CatalogService : ICatalogService
                 Text = "brand 2"
             }
         };
-
+        var result = await _httpClient.SendAsync<object, object>($"{_settings.Value.CatalogUrl}/getbrands",
+            HttpMethod.Post, new {} );
+        
         return list;
     }
 

@@ -1,3 +1,4 @@
+using System.Threading;
 using Infrastructure.UnitTests.Mocks;
 
 namespace Infrastructure.UnitTests.Services;
@@ -14,7 +15,7 @@ public class BaseDataServiceTest
         _dbContextTransaction = new Mock<IDbContextTransaction>();
         _logger = new Mock<ILogger<MockService>>();
 
-        dbContextWrapper.Setup(s => s.BeginTransaction()).Returns(_dbContextTransaction.Object);
+        dbContextWrapper.Setup(s => s.BeginTransactionAsync(It.IsAny<CancellationToken>())).ReturnsAsync(_dbContextTransaction.Object);
 
         _mockService = new MockService(dbContextWrapper.Object, _logger.Object);
     }
