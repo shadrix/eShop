@@ -22,22 +22,12 @@ public static class AuthorizationExtensions
             {
                 options.Authority = authority;
                 options.RequireHttpsMetadata = false;
-
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = false
-                };
             })
             .AddJwtBearer(AuthScheme.Site, options =>
             {
                 options.Authority = authority;
                 options.Audience = siteAudience;
                 options.RequireHttpsMetadata = false;
-
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = false
-                };
             });
         services.AddAuthorization(options =>
         {
