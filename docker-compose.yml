@@ -9,7 +9,7 @@ services:
     environment:
        - ASPNETCORE_ENVIRONMENT=Development
        - ASPNETCORE_URLS=http://+:5000
-       - ConnectionString=server=192.168.0.1;port=5433;database=catalog;uid=postgres;password=postgres;
+       - ConnectionString=server=www.alevelwebsite.com;port=5433;database=catalog;uid=postgres;password=postgres;
        - Authorization__Authority=http://www.alevelwebsite.com:5002
        - PathBase=http://www.alevelwebsite.com:5000
     depends_on:
@@ -24,7 +24,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5001
-      - CatalogUrl=http://192.168.0.1:5000/api/v1/catalogbff
+      - CatalogUrl=http://www.alevelwebsite.com:5000/api/v1/catalogbff
       - Authorization__Authority=http://www.alevelwebsite.com:5002
       - IdentityUrl=http://www.alevelwebsite.com:5002
       - CallBackUrl=http://www.alevelwebsite.com/
