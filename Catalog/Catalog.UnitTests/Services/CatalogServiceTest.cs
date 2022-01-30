@@ -83,12 +83,13 @@ public class CatalogServiceTest
         // arrange
         var testPageIndex = 1000;
         var testPageSize = 10000;
+        PaginatedItems<CatalogItem> item = null!;
 
         _catalogItemRepository.Setup(s => s.GetByPageAsync(
             It.Is<int>(i => i == testPageIndex),
             It.Is<int>(i => i == testPageSize),
             It.IsAny<int?>(),
-            It.IsAny<int?>())).Returns((Func<PaginatedItemsResponse<CatalogItemDto>>)null!);
+            It.IsAny<int?>())).ReturnsAsync(item);
 
         // act
         var result = await _catalogService.GetCatalogItemsAsync(testPageSize, testPageIndex, null);
