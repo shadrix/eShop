@@ -281,9 +281,6 @@ crossrootfs
 #python import files
 .pyc
 
-#dnx
-launchSettings.json
-
 .idea
 .generated-resources
 .terraform
