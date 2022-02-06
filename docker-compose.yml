@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.8'
 
 services:
   catalog.api:
@@ -10,3 +10,7 @@ services:
        - ASPNETCORE_URLS=http://+:5000
     ports:
       - 5000:5000
+
+networks:
+  dockernet:
+    external: true
