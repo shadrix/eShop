@@ -26,7 +26,7 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
 
     public async Task<PaginatedItemsResponse<CatalogItemDto>> GetCatalogItemsAsync(int pageSize, int pageIndex)
     {
-        return await ExecuteSafe(async () =>
+        return await ExecuteSafeAsync(async () =>
         {
             var result = await _catalogItemRepository.GetByPageAsync(pageIndex, pageSize);
             return new PaginatedItemsResponse<CatalogItemDto>()

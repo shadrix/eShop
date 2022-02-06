@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.8'
 
 services:
   catalog.api:
@@ -35,3 +35,7 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - 5433:5432
+
+networks:
+  dockernet:
+    external: true
