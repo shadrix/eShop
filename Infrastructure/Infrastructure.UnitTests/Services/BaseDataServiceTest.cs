@@ -29,8 +29,8 @@ public class BaseDataServiceTest
         await _mockService.RunWithoutException();
 
         // assert
-        _dbContextTransaction.Verify(t => t.Commit(), Times.Once);
-        _dbContextTransaction.Verify(t => t.Rollback(), Times.Never);
+        _dbContextTransaction.Verify(t => t.CommitAsync(CancellationToken.None), Times.Once);
+        _dbContextTransaction.Verify(t => t.RollbackAsync(CancellationToken.None), Times.Never);
     }
 
     [Fact]
@@ -42,8 +42,8 @@ public class BaseDataServiceTest
         await _mockService.RunWithException();
 
         // assert
-        _dbContextTransaction.Verify(t => t.Commit(), Times.Never);
-        _dbContextTransaction.Verify(t => t.Rollback(), Times.Once);
+        _dbContextTransaction.Verify(t => t.CommitAsync(CancellationToken.None), Times.Never);
+        _dbContextTransaction.Verify(t => t.RollbackAsync(CancellationToken.None), Times.Once);
 
         _logger.Verify(
             x => x.Log(
