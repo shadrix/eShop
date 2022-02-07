@@ -15,8 +15,8 @@ public class DbContextWrapper<T> : IDbContextWrapper<T>
 
     public T DbContext => _dbContext;
 
-    public IDbContextTransaction BeginTransaction()
+    public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
     {
-        return _dbContext.Database.BeginTransaction();
+        return _dbContext.Database.BeginTransactionAsync(cancellationToken);
     }
 }
