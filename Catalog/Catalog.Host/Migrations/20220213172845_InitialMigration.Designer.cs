@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Catalog.Host.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220108225624_InitialMigration")]
+    [Migration("20220213172845_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,24 @@ namespace Catalog.Host.Migrations
 
             modelBuilder.HasSequence("catalog_type_hilo")
                 .IncrementsBy(10);
+
+            modelBuilder.Entity("Catalog.Host.Data.Entities.CatalogBrand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "catalog_brand_hilo");
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CatalogBrand", (string)null);
+                });
 
             modelBuilder.Entity("Catalog.Host.Data.Entities.CatalogItem", b =>
                 {
@@ -73,25 +91,7 @@ namespace Catalog.Host.Migrations
                     b.ToTable("Catalog", (string)null);
                 });
 
-            modelBuilder.Entity("Catalog.Host.Data.Enums.CatalogBrand", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "catalog_brand_hilo");
-
-                    b.Property<string>("Brand")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CatalogBrand", (string)null);
-                });
-
-            modelBuilder.Entity("Catalog.Host.Data.Enums.CatalogType", b =>
+            modelBuilder.Entity("Catalog.Host.Data.Entities.CatalogType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -111,13 +111,13 @@ namespace Catalog.Host.Migrations
 
             modelBuilder.Entity("Catalog.Host.Data.Entities.CatalogItem", b =>
                 {
-                    b.HasOne("Catalog.Host.Data.Enums.CatalogBrand", "CatalogBrand")
+                    b.HasOne("Catalog.Host.Data.Entities.CatalogBrand", "CatalogBrand")
                         .WithMany()
                         .HasForeignKey("CatalogBrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Catalog.Host.Data.Enums.CatalogType", "CatalogType")
+                    b.HasOne("Catalog.Host.Data.Entities.CatalogType", "CatalogType")
                         .WithMany()
                         .HasForeignKey("CatalogTypeId")
                         .OnDelete(DeleteBehavior.Cascade)

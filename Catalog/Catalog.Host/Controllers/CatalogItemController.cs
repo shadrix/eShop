@@ -23,10 +23,26 @@ public class CatalogItemController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(VoidResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Add(CreateProductRequest request)
     {
-        var result = await _catalogItemService.Add(request.Name, request.Description, request.Price, request.AvailableStock, request.CatalogBrandId, request.CatalogTypeId, request.PictureFileName);
-        return Ok(new AddItemResponse<int?>() { Id = result });
+        await _catalogItemService.AddAsync(request.Name, request.Description, request.Price, request.AvailableStock, request.CatalogBrandId, request.CatalogTypeId, request.PictureFileName);
+        return Ok(new VoidResponse());
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(VoidResponse), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> Update(UpdateProductRequest request)
+    {
+        await _catalogItemService.UpdateAsync(request.Id, request.Name, request.Description, request.Price, request.AvailableStock, request.CatalogBrandId, request.CatalogTypeId, request.PictureFileName);
+        return Ok(new VoidResponse());
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(VoidResponse), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> Remove(RemoveProductRequest request)
+    {
+        await _catalogItemService.RemoveAsync(request.Id);
+        return Ok(new VoidResponse());
     }
 }
