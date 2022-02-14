@@ -94,5 +94,12 @@ services:
     ports:
       - 6380:6379
 networks:
-  dockernet:
-    external: true
+  default:
+    driver: bridge
+    internal: false
+    attachable: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.0.0/24
+          gateway: 192.168.0.1
