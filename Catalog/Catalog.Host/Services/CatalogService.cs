@@ -11,16 +11,22 @@ namespace Catalog.Host.Services;
 public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogService
 {
     private readonly ICatalogItemRepository _catalogItemRepository;
+    private readonly ICatalogBrandRepository _catalogBrandRepository;
+    private readonly ICatalogTypeRepository _catalogTypeRepository;
     private readonly IMapper _mapper;
 
     public CatalogService(
         IDbContextWrapper<ApplicationDbContext> dbContextWrapper,
         ILogger<BaseDataService<ApplicationDbContext>> logger,
         ICatalogItemRepository catalogItemRepository,
+        ICatalogBrandRepository catalogBrandRepository,
+        ICatalogTypeRepository catalogTypeRepository,
         IMapper mapper)
         : base(dbContextWrapper, logger)
     {
         _catalogItemRepository = catalogItemRepository;
+        _catalogBrandRepository = catalogBrandRepository;
+        _catalogTypeRepository = catalogTypeRepository;
         _mapper = mapper;
     }
 
@@ -73,7 +79,7 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
     {
         return await ExecuteSafeAsync(async () =>
         {
-            var result = await _catalogItemRepository.GetBrandsAsync();
+            var result = await _catalogBrandRepository.GetBrandsAsync();
 
             return result.Select(s => _mapper.Map<CatalogBrandDto>(s)).ToList();
         });
@@ -83,7 +89,7 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
     {
         return await ExecuteSafeAsync(async () =>
         {
-            var result = await _catalogItemRepository.GetTypesAsync();
+            var result = await _catalogTypeRepository.GetTypesAsync();
 
             return result.Select(s => _mapper.Map<CatalogTypeDto>(s)).ToList();
         });

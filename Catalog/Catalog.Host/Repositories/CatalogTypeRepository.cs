@@ -52,5 +52,12 @@ namespace Catalog.Host.Repositories.Interfaces
 
             return itemToUpdate.Id;
         }
+
+        public async Task<IEnumerable<CatalogType>> GetTypesAsync()
+        {
+            var resourse = await _dbContext.CatalogTypes.ToListAsync();
+
+            return resourse;
+        }
     }
 }

@@ -74,20 +74,6 @@ public class CatalogItemRepository : ICatalogItemRepository
         return resourse;
     }
 
-    public async Task<IEnumerable<CatalogBrand>> GetBrandsAsync()
-    {
-        var resourse = await _dbContext.CatalogBrands.ToListAsync();
-
-        return resourse;
-    }
-
-    public async Task<IEnumerable<CatalogType>> GetTypesAsync()
-    {
-        var resourse = await _dbContext.CatalogTypes.ToListAsync();
-
-        return resourse;
-    }
-
     public async Task<CatalogItem> GetByIdAsync(int id)
     {
         var res = await _dbContext.CatalogItems
