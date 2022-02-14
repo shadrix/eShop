@@ -22,13 +22,13 @@ public class CatalogItemService : BaseDataService<ApplicationDbContext>, ICatalo
         return ExecuteSafeAsync(() => _catalogItemRepository.Create(name, description, price, availableStock, catalogBrandId, catalogTypeId, pictureFileName));
     }
 
-    public Task<int> Delete(int id)
+    public Task<bool> Delete(string name)
     {
-        return ExecuteSafeAsync(() => _catalogItemRepository.Delete(id));
+        return ExecuteSafeAsync(() => _catalogItemRepository.Delete(name));
     }
 
-    public Task<int> Update(int id, string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
+    public Task<bool> Update(string oldName, string newName, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
     {
-        return ExecuteSafeAsync(() => _catalogItemRepository.Update(id, name, description, price, availableStock, catalogBrandId, catalogTypeId, pictureFileName));
+        return ExecuteSafeAsync(() => _catalogItemRepository.Update(oldName, newName, description, price, availableStock, catalogBrandId, catalogTypeId, pictureFileName));
     }
 }

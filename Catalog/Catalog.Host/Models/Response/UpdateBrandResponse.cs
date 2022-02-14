@@ -1,6 +1,6 @@
 ﻿namespace Catalog.Host.Models.Response
 {
-    public class UpdateItemResponse
+    public class UpdateBrandResponse
     {
         public bool IsUpdated { get; set; }
     }

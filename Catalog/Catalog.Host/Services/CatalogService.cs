@@ -74,24 +74,4 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
             return result.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList();
         });
     }
-
-    public async Task<IEnumerable<CatalogBrandDto>> GetBrandsAsync()
-    {
-        return await ExecuteSafeAsync(async () =>
-        {
-            var result = await _catalogBrandRepository.GetBrandsAsync();
-
-            return result.Select(s => _mapper.Map<CatalogBrandDto>(s)).ToList();
-        });
-    }
-
-    public async Task<IEnumerable<CatalogTypeDto>> GetTypesAsync()
-    {
-        return await ExecuteSafeAsync(async () =>
-        {
-            var result = await _catalogTypeRepository.GetTypesAsync();
-
-            return result.Select(s => _mapper.Map<CatalogTypeDto>(s)).ToList();
-        });
-    }
 }

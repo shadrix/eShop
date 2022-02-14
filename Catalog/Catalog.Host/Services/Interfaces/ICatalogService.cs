@@ -9,6 +9,4 @@ public interface ICatalogService
     Task<CatalogItemDto> GetByIdAsync(int id);
     Task<IEnumerable<CatalogItemDto>> GetByBrandAsync(string brandTitle);
     Task<IEnumerable<CatalogItemDto>> GetByTypeAsync(string typeTitle);
-    Task<IEnumerable<CatalogBrandDto>> GetBrandsAsync();
-    Task<IEnumerable<CatalogTypeDto>> GetTypesAsync();
 }

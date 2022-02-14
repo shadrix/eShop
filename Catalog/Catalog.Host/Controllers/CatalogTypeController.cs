@@ -21,29 +21,26 @@ public class CatalogTypeController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(AddItemResponse<int>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult> Create(CreateTypeRequest request)
+    [ProducesResponseType(typeof(AddTypeResponse<int?>), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> Create(CreateTypeRequest request)
     {
         var result = await _catalogTypeService.Create(request.Type);
-
-        return Ok(new AddItemResponse<int>() { Id = result });
+        return Ok(new AddTypeResponse<int?>() { Id = result });
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(UpdateItemResponse<int>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult> Update(UpdateTypeRequest request)
+    [ProducesResponseType(typeof(DeleteTypeResponse), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> Delete(DeleteTypeRequest request)
     {
-        var result = await _catalogTypeService.Update(request.Id, request.Type);
-
-        return Ok(new UpdateItemResponse<int>() { Id = result });
+        var result = await _catalogTypeService.Delete(request.Name);
+        return Ok(new DeleteTypeResponse() { IsRemoved = result });
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(DeleteItemResponse<int>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult> Delete(DeleteTypeRequest request)
+    [ProducesResponseType(typeof(UpdateTypeResponse), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> Update(UpdateTypeRequest request)
     {
-        var result = await _catalogTypeService.Delete(request.Id);
-
-        return Ok(new DeleteItemResponse<int>() { Id = result });
+        var result = await _catalogTypeService.Update(request.OldName, request.NewName);
+        return Ok(new UpdateTypeResponse() { IsUpdated = result });
     }
 }

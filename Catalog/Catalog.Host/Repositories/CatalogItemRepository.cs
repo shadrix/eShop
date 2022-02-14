@@ -84,31 +84,42 @@ public class CatalogItemRepository : ICatalogItemRepository
         return res;
     }
 
-    public async Task<int> Update(int id, string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
+    public async Task<bool> Update(string oldName, string newName, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
     {
-        var itemToUpdate = _dbContext.CatalogItems.First(ci => ci.Id == id);
+        var item = await _dbContext.CatalogItems
+            .Where(w => w.Name.Equals(oldName))
+            .FirstOrDefaultAsync();
 
-        itemToUpdate.Name = name;
-        itemToUpdate.Description = description;
-        itemToUpdate.Price = price;
-        itemToUpdate.AvailableStock = availableStock;
-        itemToUpdate.CatalogBrandId = catalogBrandId;
-        itemToUpdate.CatalogTypeId = catalogTypeId;
-        itemToUpdate.PictureFileName = pictureFileName;
+        if (item is not null)
+        {
+            item.CatalogBrandId = catalogBrandId;
+            item.CatalogTypeId = catalogTypeId;
+            item.Description = description;
+            item.Name = newName;
+            item.PictureFileName = pictureFileName;
+            item.Price = price;
+            item.AvailableStock = availableStock;
 
-        _dbContext.CatalogItems.Update(itemToUpdate);
-        await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
 
-        return itemToUpdate.Id;
+        return false;
     }
 
-    public async Task<int> Delete(int id)
+    public async Task<bool> Delete(string name)
     {
-        var itemToRemove = _dbContext.CatalogItems.First(ci => ci.Id == id);
+        var item = await _dbContext.CatalogItems
+             .Where(w => w.Name.Equals(name))
+             .FirstOrDefaultAsync();
 
-        _dbContext.CatalogItems.Remove(itemToRemove);
-        await _dbContext.SaveChangesAsync();
+        if (item is not null)
+        {
+            _dbContext.Remove(item);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
 
-        return itemToRemove.Id;
+        return false;
     }
 }

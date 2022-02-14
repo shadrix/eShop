@@ -31,18 +31,18 @@ public class CatalogItemController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(UpdateItemResponse<int?>), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> Update(UpdateProductRequest request)
+    [ProducesResponseType(typeof(DeleteItemResponse), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> Delete(DeleteProductRequest request)
     {
-        var result = await _catalogItemService.Update(request.Id, request.Name, request.Description, request.Price, request.AvailableStock, request.CatalogBrandId, request.CatalogTypeId, request.PictureFileName);
-        return Ok(new UpdateItemResponse<int?>() { Id = result });
+        var result = await _catalogItemService.Delete(request.Name);
+        return Ok(new DeleteItemResponse() { IsRemoved = result });
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(DeleteItemResponse<int?>), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> Delete(DeleteProductRequest request)
+    [ProducesResponseType(typeof(UpdateItemResponse), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> Update(UpdateProductRequest request)
     {
-        var result = await _catalogItemService.Delete(request.Id);
-        return Ok(new DeleteItemResponse<int?>() { Id = result });
+        var result = await _catalogItemService.Update(request.OldName, request.NewName, request.Description, request.Price, request.AvailableStock, request.CatalogBrandId, request.CatalogTypeId, request.PictureFileName);
+        return Ok(new UpdateItemResponse() { IsUpdated = result });
     }
 }

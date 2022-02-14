@@ -4,9 +4,9 @@ namespace Catalog.Host.Repositories.Interfaces
 {
     public interface ICatalogTypeRepository
     {
-        Task<int> Create(string title);
-        Task<int> Update(int id, string title);
-        Task<int> Delete(int id);
+        Task<int?> Create(string title);
+        Task<bool> Delete(string name);
+        Task<bool> Update(string oldName, string newName);
         Task<IEnumerable<CatalogType>> GetTypesAsync();
     }
 }

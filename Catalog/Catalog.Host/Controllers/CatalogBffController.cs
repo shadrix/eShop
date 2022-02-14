@@ -15,11 +15,22 @@ public class CatalogBffController : ControllerBase
 {
     private readonly ILogger<CatalogBffController> _logger;
     private readonly ICatalogService _catalogService;
+    private readonly ICatalogItemService _catalogItemService;
+    private readonly ICatalogBrandService _catalogBrandService;
+    private readonly ICatalogTypeService _catalogTypeService;
 
-    public CatalogBffController(ILogger<CatalogBffController> logger, ICatalogService catalogService)
+    public CatalogBffController(
+        ILogger<CatalogBffController> logger,
+        ICatalogService catalogService,
+        ICatalogItemService catalogItemService,
+        ICatalogBrandService catalogBrandService,
+        ICatalogTypeService catalogTypeService)
     {
         _logger = logger;
         _catalogService = catalogService;
+        _catalogItemService = catalogItemService;
+        _catalogBrandService = catalogBrandService;
+        _catalogTypeService = catalogTypeService;
     }
 
     [HttpPost]
@@ -61,7 +72,7 @@ public class CatalogBffController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<CatalogBrandDto>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetBrands()
     {
-        var result = await _catalogService.GetBrandsAsync();
+        var result = await _catalogBrandService.GetBrandsAsync();
 
         return Ok(result);
     }
@@ -70,7 +81,7 @@ public class CatalogBffController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<CatalogTypeDto>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetTypes()
     {
-        var result = await _catalogService.GetTypesAsync();
+        var result = await _catalogTypeService.GetTypesAsync();
 
         return Ok(result);
     }

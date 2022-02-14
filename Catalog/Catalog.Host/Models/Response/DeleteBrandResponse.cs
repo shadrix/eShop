@@ -1,6 +1,6 @@
 ﻿namespace Catalog.Host.Models.Response
 {
-    public class DeleteItemResponse
+    public class DeleteBrandResponse
     {
         public bool IsRemoved { get; set; }
     }

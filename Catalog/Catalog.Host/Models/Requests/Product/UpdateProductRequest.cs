@@ -2,9 +2,8 @@
 {
     public class UpdateProductRequest
     {
-        public int Id { get; set; }
-
-        public string Name { get; set; } = null!;
+        public string OldName { get; set; } = null!;
+        public string NewName { get; set; } = null!;
 
         public string Description { get; set; } = null!;
 

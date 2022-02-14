@@ -2,7 +2,7 @@
 {
     public class UpdateBrandRequest
     {
-        public int Id { get; set; }
-        public string Brand { get; set; } = null!;
+        public string OldName { get; set; } = null!;
+        public string NewName { get; set; } = null!;
     }
 }

@@ -21,29 +21,26 @@ public class CatalogBrandController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(AddItemResponse<int>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult> Create(CreateBrandRequest request)
+    [ProducesResponseType(typeof(AddBrandResponse<int?>), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> Create(CreateBrandRequest request)
     {
         var result = await _catalogBrandService.Create(request.Brand);
-
-        return Ok(new AddItemResponse<int>() { Id = result });
+        return Ok(new AddBrandResponse<int?>() { Id = result });
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(UpdateItemResponse<int>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult> Update(UpdateBrandRequest request)
+    [ProducesResponseType(typeof(DeleteBrandResponse), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> Delete(DeleteBrandRequest request)
     {
-        var result = await _catalogBrandService.Update(request.Id, request.Brand);
-
-        return Ok(new UpdateItemResponse<int>() { Id = result });
+        var result = await _catalogBrandService.Delete(request.Name);
+        return Ok(new DeleteBrandResponse() { IsRemoved = result });
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(DeleteItemResponse<int>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult> Delete(DeleteBrandRequest request)
+    [ProducesResponseType(typeof(UpdateBrandResponse), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> Update(UpdateBrandRequest request)
     {
-        var result = await _catalogBrandService.Delete(request.Id);
-
-        return Ok(new DeleteItemResponse<int>() { Id = result });
+        var result = await _catalogBrandService.Update(request.OldName, request.NewName);
+        return Ok(new UpdateBrandResponse() { IsUpdated = result });
     }
 }

@@ -19,7 +19,7 @@ namespace Catalog.Host.Repositories
             _logger = logger;
         }
 
-        public async Task<int> Create(string title)
+        public async Task<int?> Create(string title)
         {
             var item = await _dbContext.CatalogBrands.AddAsync(new CatalogBrand
             {
@@ -31,26 +31,37 @@ namespace Catalog.Host.Repositories
             return item.Entity.Id;
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<bool> Delete(string title)
         {
-            var itemToRemove = _dbContext.CatalogBrands.First(ci => ci.Id == id);
+            var brand = await _dbContext.CatalogBrands
+            .Where(w => w.Brand.Equals(title))
+            .FirstOrDefaultAsync();
 
-            _dbContext.CatalogBrands.Remove(itemToRemove);
-            await _dbContext.SaveChangesAsync();
+            if (brand is not null)
+            {
+                _dbContext.Remove(brand);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
 
-            return itemToRemove.Id;
+            return false;
         }
 
-        public async Task<int> Update(int id, string title)
+        public async Task<bool> Update(string oldName, string newName)
         {
-            var itemToUpdate = _dbContext.CatalogTypes.First(ci => ci.Id == id);
+            var brand = await _dbContext.CatalogBrands
+           .Where(w => w.Brand.Equals(oldName))
+           .FirstOrDefaultAsync();
 
-            itemToUpdate.Type = title;
+            if (brand is not null)
+            {
+                brand.Brand = newName;
 
-            _dbContext.CatalogTypes.Update(itemToUpdate);
-            await _dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
 
-            return itemToUpdate.Id;
+            return false;
         }
 
         public async Task<IEnumerable<CatalogBrand>> GetBrandsAsync()
