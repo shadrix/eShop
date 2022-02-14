@@ -38,4 +38,54 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
             };
         });
     }
+
+    public async Task<IEnumerable<CatalogItemDto>> GetByTypeAsync(string typeTitle)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetByTypeAsync(typeTitle);
+
+            return result.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList();
+        });
+    }
+
+    public async Task<CatalogItemDto> GetByIdAsync(int id)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetByIdAsync(id);
+
+            return _mapper.Map<CatalogItemDto>(result);
+        });
+    }
+
+    public async Task<IEnumerable<CatalogItemDto>> GetByBrandAsync(string typeTitle)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetByBrandAsync(typeTitle);
+
+            return result.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList();
+        });
+    }
+
+    public async Task<IEnumerable<CatalogBrandDto>> GetBrandsAsync()
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetBrandsAsync();
+
+            return result.Select(s => _mapper.Map<CatalogBrandDto>(s)).ToList();
+        });
+    }
+
+    public async Task<IEnumerable<CatalogTypeDto>> GetTypesAsync()
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetTypesAsync();
+
+            return result.Select(s => _mapper.Map<CatalogTypeDto>(s)).ToList();
+        });
+    }
 }
