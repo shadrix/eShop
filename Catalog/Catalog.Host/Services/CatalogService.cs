@@ -11,16 +11,22 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
 {
     private readonly ICatalogItemRepository _catalogItemRepository;
     private readonly IMapper _mapper;
+    private readonly ICatalogTypeRepository _typeRepository;
+    private readonly ICatalogBrandRepository _brandRepository;
 
     public CatalogService(
         IDbContextWrapper<ApplicationDbContext> dbContextWrapper,
         ILogger<BaseDataService<ApplicationDbContext>> logger,
         ICatalogItemRepository catalogItemRepository,
-        IMapper mapper)
+        IMapper mapper,
+        ICatalogTypeRepository typeRepository,
+        ICatalogBrandRepository brandRepository)
         : base(dbContextWrapper, logger)
     {
         _catalogItemRepository = catalogItemRepository;
         _mapper = mapper;
+        _typeRepository = typeRepository;
+        _brandRepository = brandRepository;
     }
 
     public async Task<PaginatedItemsResponse<CatalogItemDto>?> GetCatalogItemsAsync(int pageSize, int pageIndex, Dictionary<CatalogTypeFilter, int>? filters)
@@ -55,6 +61,66 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
                 Data = result.Data.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList(),
                 PageIndex = pageIndex,
                 PageSize = pageSize
+            };
+        });
+    }
+
+    public async Task<GetByIdResponse<CatalogItemDto>> GetCatalogItemByIdAsync(int id)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetCatalogItemByIdAsync(id);
+            return new GetByIdResponse<CatalogItemDto>
+            {
+                Item = _mapper.Map<CatalogItemDto>(result)
+            };
+        });
+    }
+
+    public async Task<GetBrandsResponse<CatalogItemDto>> GetCatalogItemsByBrandAsync(int brandId)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetCatalogItemsByBrandAsync(brandId);
+            return new GetBrandsResponse<CatalogItemDto>()
+            {
+                Data = result.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList(),
+            };
+        });
+    }
+
+    public async Task<GetTypesResponse<CatalogItemDto>> GetCatalogItemsByTypeAsync(int typeId)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetCatalogItemsTypeAsync(typeId);
+            return new GetTypesResponse<CatalogItemDto>()
+            {
+                Data = result.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList(),
+            };
+        });
+    }
+
+    public async Task<GetBrandsResponse<CatalogBrandDto>> GetCatalogBrandsAsync()
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _brandRepository.GetBrandesAsync();
+            return new GetBrandsResponse<CatalogBrandDto>
+            {
+                Data = result.Select(b => _mapper.Map<CatalogBrandDto>(result)).ToList()
+            };
+        });
+    }
+
+    public async Task<GetTypesResponse<CatalogTypeDto>> GetCatalogTypesAsync()
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _typeRepository.GetTypesAsync();
+            return new GetTypesResponse<CatalogTypeDto>
+            {
+                Data = result.Select(b => _mapper.Map<CatalogTypeDto>(result)).ToList()
             };
         });
     }
