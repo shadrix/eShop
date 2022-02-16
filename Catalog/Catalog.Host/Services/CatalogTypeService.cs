@@ -27,14 +27,14 @@ namespace Catalog.Host.Services
             return ExecuteSafeAsync(() => _catalogTypeRepository.Create(title));
         }
 
-        public Task<bool> Delete(string title)
+        public Task<bool> Delete(int id)
         {
-            return ExecuteSafeAsync(() => _catalogTypeRepository.Delete(title));
+            return ExecuteSafeAsync(() => _catalogTypeRepository.Delete(id));
         }
 
-        public Task<bool> Update(string oldName, string newName)
+        public Task<bool> Update(int id, string name)
         {
-            return ExecuteSafeAsync(() => _catalogTypeRepository.Update(oldName, newName));
+            return ExecuteSafeAsync(() => _catalogTypeRepository.Update(id, name));
         }
 
         public async Task<IEnumerable<CatalogTypeDto>> GetTypesAsync()

@@ -2,7 +2,7 @@
 {
     public class UpdateTypeRequest
     {
-        public string OldName { get; set; } = null!;
-        public string NewName { get; set; } = null!;
+        public int Id { get; set; }
+        public string Name { get; set; } = null!;
     }
 }

@@ -31,11 +31,9 @@ namespace Catalog.Host.Repositories
             return item.Entity.Id;
         }
 
-        public async Task<bool> Delete(string title)
+        public async Task<bool> Delete(int id)
         {
-            var brand = await _dbContext.CatalogBrands
-            .Where(w => w.Brand.Equals(title))
-            .FirstOrDefaultAsync();
+            var brand = await _dbContext.CatalogBrands.FirstOrDefaultAsync(f => f.Id == id);
 
             if (brand is not null)
             {
@@ -47,16 +45,13 @@ namespace Catalog.Host.Repositories
             return false;
         }
 
-        public async Task<bool> Update(string oldName, string newName)
+        public async Task<bool> Update(int id, string title)
         {
-            var brand = await _dbContext.CatalogBrands
-           .Where(w => w.Brand.Equals(oldName))
-           .FirstOrDefaultAsync();
+            var brand = await _dbContext.CatalogBrands.FirstOrDefaultAsync(f => f.Id == id);
 
             if (brand is not null)
             {
-                brand.Brand = newName;
-
+                brand.Brand = title;
                 await _dbContext.SaveChangesAsync();
                 return true;
             }

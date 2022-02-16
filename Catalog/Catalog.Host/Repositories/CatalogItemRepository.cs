@@ -84,18 +84,19 @@ public class CatalogItemRepository : ICatalogItemRepository
         return res;
     }
 
-    public async Task<bool> Update(string oldName, string newName, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
+    public async Task<bool> Update(int id, string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
     {
         var item = await _dbContext.CatalogItems
-            .Where(w => w.Name.Equals(oldName))
-            .FirstOrDefaultAsync();
+            .Include(i => i.CatalogBrand)
+            .Include(i => i.CatalogType)
+            .FirstOrDefaultAsync(f => f.Id == id);
 
         if (item is not null)
         {
             item.CatalogBrandId = catalogBrandId;
             item.CatalogTypeId = catalogTypeId;
             item.Description = description;
-            item.Name = newName;
+            item.Name = name;
             item.PictureFileName = pictureFileName;
             item.Price = price;
             item.AvailableStock = availableStock;
@@ -107,11 +108,9 @@ public class CatalogItemRepository : ICatalogItemRepository
         return false;
     }
 
-    public async Task<bool> Delete(string name)
+    public async Task<bool> Delete(int id)
     {
-        var item = await _dbContext.CatalogItems
-             .Where(w => w.Name.Equals(name))
-             .FirstOrDefaultAsync();
+        var item = await _dbContext.CatalogItems.FirstOrDefaultAsync(f => f.Id == id);
 
         if (item is not null)
         {

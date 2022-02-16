@@ -5,8 +5,8 @@ namespace Catalog.Host.Repositories.Interfaces
     public interface ICatalogBrandRepository
     {
         Task<int?> Create(string name);
-        Task<bool> Delete(string name);
-        Task<bool> Update(string oldName, string newName);
+        Task<bool> Delete(int id);
+        Task<bool> Update(int id, string name);
         Task<IEnumerable<CatalogBrand>> GetBrandsAsync();
     }
 }

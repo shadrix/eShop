@@ -31,11 +31,9 @@ namespace Catalog.Host.Repositories.Interfaces
             return item.Entity.Id;
         }
 
-        public async Task<bool> Delete(string title)
+        public async Task<bool> Delete(int id)
         {
-            var type = await _dbContext.CatalogTypes
-           .Where(w => w.Type.Equals(title))
-           .FirstOrDefaultAsync();
+            var type = await _dbContext.CatalogTypes.FirstOrDefaultAsync(f => f.Id == id);
 
             if (type is not null)
             {
@@ -47,16 +45,13 @@ namespace Catalog.Host.Repositories.Interfaces
             return false;
         }
 
-        public async Task<bool> Update(string oldName, string newName)
+        public async Task<bool> Update(int id, string name)
         {
-            var type = await _dbContext.CatalogTypes
-            .Where(w => w.Type.Equals(oldName))
-            .FirstOrDefaultAsync();
+            var type = await _dbContext.CatalogTypes.FirstOrDefaultAsync(f => f.Id == id);
 
             if (type is not null)
             {
-                type.Type = newName;
-
+                type.Type = name;
                 await _dbContext.SaveChangesAsync();
                 return true;
             }

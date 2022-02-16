@@ -32,7 +32,7 @@ public class CatalogTypeController : ControllerBase
     [ProducesResponseType(typeof(DeleteTypeResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Delete(DeleteTypeRequest request)
     {
-        var result = await _catalogTypeService.Delete(request.Name);
+        var result = await _catalogTypeService.Delete(request.Id);
         return Ok(new DeleteTypeResponse() { IsRemoved = result });
     }
 
@@ -40,7 +40,7 @@ public class CatalogTypeController : ControllerBase
     [ProducesResponseType(typeof(UpdateTypeResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Update(UpdateTypeRequest request)
     {
-        var result = await _catalogTypeService.Update(request.OldName, request.NewName);
+        var result = await _catalogTypeService.Update(request.Id, request.Name);
         return Ok(new UpdateTypeResponse() { IsUpdated = result });
     }
 }

@@ -27,9 +27,9 @@ namespace Catalog.Host.Services.Interfaces
             return ExecuteSafeAsync(() => _catalogBrandRepository.Create(title));
         }
 
-        public Task<bool> Delete(string title)
+        public Task<bool> Delete(int id)
         {
-            return ExecuteSafeAsync(() => _catalogBrandRepository.Delete(title));
+            return ExecuteSafeAsync(() => _catalogBrandRepository.Delete(id));
         }
 
         public async Task<IEnumerable<CatalogBrandDto>> GetBrandsAsync()
@@ -42,9 +42,9 @@ namespace Catalog.Host.Services.Interfaces
             });
         }
 
-        public Task<bool> Update(string oldName, string newName)
+        public Task<bool> Update(int id, string name)
         {
-            return ExecuteSafeAsync(() => _catalogBrandRepository.Update(oldName, newName));
+            return ExecuteSafeAsync(() => _catalogBrandRepository.Update(id, name));
         }
     }
 }

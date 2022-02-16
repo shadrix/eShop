@@ -32,7 +32,7 @@ public class CatalogBrandController : ControllerBase
     [ProducesResponseType(typeof(DeleteBrandResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Delete(DeleteBrandRequest request)
     {
-        var result = await _catalogBrandService.Delete(request.Name);
+        var result = await _catalogBrandService.Delete(request.Id);
         return Ok(new DeleteBrandResponse() { IsRemoved = result });
     }
 
@@ -40,7 +40,7 @@ public class CatalogBrandController : ControllerBase
     [ProducesResponseType(typeof(UpdateBrandResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Update(UpdateBrandRequest request)
     {
-        var result = await _catalogBrandService.Update(request.OldName, request.NewName);
+        var result = await _catalogBrandService.Update(request.Id, request.Name);
         return Ok(new UpdateBrandResponse() { IsUpdated = result });
     }
 }
