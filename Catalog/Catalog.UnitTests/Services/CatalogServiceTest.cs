@@ -92,4 +92,163 @@ public class CatalogServiceTest
         // assert
         result.Should().BeNull();
     }
+
+    [Fact]
+    public async Task GetByTypeAsync_Success()
+    {
+        // arrange
+        var testTitle = "testTitle";
+        var testItems = new List<CatalogItem>()
+        {
+            new CatalogItem()
+            {
+                Name = "TestName",
+            },
+        };
+        var testItem = new CatalogItem()
+        {
+            Name = "TestName",
+        };
+        var testItemDto = new CatalogItemDto()
+        {
+            Name = "TestName",
+        };
+
+        _catalogItemRepository.Setup(s => s.GetByTypeAsync(
+            It.Is<string>(s => s == testTitle)))
+            .ReturnsAsync(testItems);
+
+        _mapper.Setup(s => s.Map<CatalogItemDto>(It.Is<CatalogItem>(i => i.Equals(testItem))))
+            .Returns(testItemDto);
+
+        // act
+        var result = await _catalogService.GetByTypeAsync(testTitle);
+
+        // assert
+        result.Should().NotBeNull();
+        result.Should().HaveCount(1);
+    }
+
+    [Fact]
+    public async Task GetByTypeAsync_Failed()
+    {
+        // arrange
+        var testTitle = "testTitle";
+        var testItems = new List<CatalogItem>();
+
+        _catalogItemRepository.Setup(s => s.GetByTypeAsync(
+            It.Is<string>(s => s == testTitle)))
+            .ReturnsAsync(testItems);
+
+        // act
+        var result = await _catalogService.GetByTypeAsync(testTitle);
+
+        // assert
+        result.Should().NotBeNull();
+        result.Should().HaveCount(0);
+    }
+
+    [Fact]
+    public async Task GetByBrandAsync_Success()
+    {
+        // arrange
+        var testBrand = "testTitle";
+        var testItems = new List<CatalogItem>()
+        {
+            new CatalogItem()
+            {
+                Name = "TestName",
+            },
+        };
+        var testItem = new CatalogItem()
+        {
+            Name = "TestName",
+        };
+        var testItemDto = new CatalogItemDto()
+        {
+            Name = "TestName",
+        };
+
+        _catalogItemRepository.Setup(s => s.GetByBrandAsync(
+            It.Is<string>(s => s == testBrand)))
+            .ReturnsAsync(testItems);
+
+        _mapper.Setup(s => s.Map<CatalogItemDto>(It.Is<CatalogItem>(i => i.Equals(testItem))))
+            .Returns(testItemDto);
+
+        // act
+        var result = await _catalogService.GetByBrandAsync(testBrand);
+
+        // assert
+        result.Should().NotBeNull();
+        result.Should().HaveCount(1);
+    }
+
+    [Fact]
+    public async Task GetByBrandAsync_Failed()
+    {
+        // arrange
+        var testBrand = "testTitle";
+        var testItems = new List<CatalogItem>();
+
+        _catalogItemRepository.Setup(s => s.GetByBrandAsync(
+            It.Is<string>(s => s == testBrand)))
+            .ReturnsAsync(testItems);
+
+        // act
+        var result = await _catalogService.GetByBrandAsync(testBrand);
+
+        // assert
+        result.Should().HaveCount(0);
+    }
+
+    [Fact]
+    public async Task GetByIdAsync_Success()
+    {
+        // arrange
+        var testId = 1;
+
+        var catalogItem = new CatalogItem()
+        {
+            Name = "TestName"
+        };
+
+        var catalogItemDto = new CatalogItemDto()
+        {
+            Name = "TestName"
+        };
+
+        _catalogItemRepository.Setup(s => s.GetByIdAsync(
+            It.Is<int>(i => i == testId)))
+            .ReturnsAsync(catalogItem);
+
+        _mapper.Setup(s => s.Map<CatalogItemDto>(
+            It.Is<CatalogItem>(i => i.Equals(catalogItem))))
+            .Returns(catalogItemDto);
+
+        // act
+        var result = await _catalogService.GetByIdAsync(testId);
+
+        // assert
+        result.Should().NotBeNull();
+        result.Should().Be(catalogItemDto);
+    }
+
+    [Fact]
+    public async Task GetByIdAsync_Failed()
+    {
+        // arrange
+        var testId = 1;
+        CatalogItem? testItem = null;
+
+        _catalogItemRepository.Setup(s => s.GetByIdAsync(
+            It.Is<int>(i => i == testId)))
+            .ReturnsAsync(testItem);
+
+        // act
+        var result = await _catalogService.GetByIdAsync(testId).ConfigureAwait(false);
+
+        // assert
+        result.Should().BeNull();
+    }
 }

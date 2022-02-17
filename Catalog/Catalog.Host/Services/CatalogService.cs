@@ -1,3 +1,5 @@
+using AutoMapper;
+using Catalog.Host.Configurations;
 using Catalog.Host.Data;
 using Catalog.Host.Models.Dtos;
 using Catalog.Host.Models.Response;
@@ -22,16 +24,11 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
         _mapper = mapper;
     }
 
-    public async Task<PaginatedItemsResponse<CatalogItemDto>?> GetCatalogItemsAsync(int pageSize, int pageIndex)
+    public async Task<PaginatedItemsResponse<CatalogItemDto>> GetCatalogItemsAsync(int pageSize, int pageIndex)
     {
         return await ExecuteSafeAsync(async () =>
         {
             var result = await _catalogItemRepository.GetByPageAsync(pageIndex, pageSize);
-            if (result == null)
-            {
-                return null;
-            }
-
             return new PaginatedItemsResponse<CatalogItemDto>()
             {
                 Count = result.TotalCount,
@@ -39,6 +36,36 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
                 PageIndex = pageIndex,
                 PageSize = pageSize
             };
+        });
+    }
+
+    public async Task<IEnumerable<CatalogItemDto>> GetByTypeAsync(string typeTitle)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetByTypeAsync(typeTitle);
+
+            return result.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList();
+        });
+    }
+
+    public async Task<CatalogItemDto?> GetByIdAsync(int id)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetByIdAsync(id);
+
+            return _mapper.Map<CatalogItemDto>(result);
+        });
+    }
+
+    public async Task<IEnumerable<CatalogItemDto>> GetByBrandAsync(string typeTitle)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetByBrandAsync(typeTitle);
+
+            return result.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList();
         });
     }
 }

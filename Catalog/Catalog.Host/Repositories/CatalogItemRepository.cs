@@ -33,9 +33,9 @@ public class CatalogItemRepository : ICatalogItemRepository
         return new PaginatedItems<CatalogItem>() { TotalCount = totalItems, Data = itemsOnPage };
     }
 
-    public async Task<int?> Add(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
+    public async Task<int?> Create(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
     {
-        var item1 = new CatalogItem
+        var item = await _dbContext.CatalogItems.AddAsync(new CatalogItem
         {
             CatalogBrandId = catalogBrandId,
             CatalogTypeId = catalogTypeId,
@@ -43,11 +43,80 @@ public class CatalogItemRepository : ICatalogItemRepository
             Name = name,
             PictureFileName = pictureFileName,
             Price = price
-        };
-        var item = await _dbContext.AddAsync(item1);
+        });
 
         await _dbContext.SaveChangesAsync();
 
         return item.Entity.Id;
+    }
+
+    public async Task<IEnumerable<CatalogItem>> GetByBrandAsync(string brandTitle)
+    {
+        var resourse = await _dbContext.CatalogItems
+            .Include(i => i.CatalogBrand)
+            .Include(i => i.CatalogType)
+            .Where(ci => ci.CatalogBrand.Brand == brandTitle)
+            .ToListAsync();
+
+        return resourse;
+    }
+
+    public async Task<IEnumerable<CatalogItem>> GetByTypeAsync(string typeTitle)
+    {
+        var resourse = await _dbContext.CatalogItems
+            .Include(i => i.CatalogBrand)
+            .Include(i => i.CatalogType)
+            .Where(ci => ci.CatalogType.Type == typeTitle)
+            .ToListAsync();
+
+        return resourse;
+    }
+
+    public async Task<CatalogItem?> GetByIdAsync(int id)
+    {
+        var res = await _dbContext.CatalogItems
+            .Include(i => i.CatalogBrand)
+            .Include(i => i.CatalogType)
+            .FirstAsync(ci => ci.Id == id);
+
+        return res;
+    }
+
+    public async Task<bool> Update(int id, string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
+    {
+        var item = await _dbContext.CatalogItems
+            .Include(i => i.CatalogBrand)
+            .Include(i => i.CatalogType)
+            .FirstOrDefaultAsync(f => f.Id == id);
+
+        if (item is not null)
+        {
+            item.CatalogBrandId = catalogBrandId;
+            item.CatalogTypeId = catalogTypeId;
+            item.Description = description;
+            item.Name = name;
+            item.PictureFileName = pictureFileName;
+            item.Price = price;
+            item.AvailableStock = availableStock;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+        return false;
+    }
+
+    public async Task<bool> Delete(int id)
+    {
+        var item = await _dbContext.CatalogItems.FirstOrDefaultAsync(f => f.Id == id);
+
+        if (item is not null)
+        {
+            _dbContext.Remove(item);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+        return false;
     }
 }
