@@ -7,7 +7,6 @@ namespace Catalog.Host.Services;
 public class CatalogItemService : BaseDataService<ApplicationDbContext>, ICatalogItemService
 {
     private readonly ICatalogItemRepository _catalogItemRepository;
-
     public CatalogItemService(
         IDbContextWrapper<ApplicationDbContext> dbContextWrapper,
         ILogger<BaseDataService<ApplicationDbContext>> logger,
@@ -17,8 +16,20 @@ public class CatalogItemService : BaseDataService<ApplicationDbContext>, ICatalo
         _catalogItemRepository = catalogItemRepository;
     }
 
-    public Task<int?> AddAsync(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
+    public async Task<int?> AddAsync(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
     {
-        return ExecuteSafeAsync(() => _catalogItemRepository.Add(name, description, price, availableStock, catalogBrandId, catalogTypeId, pictureFileName));
+        return await ExecuteSafeAsync(async () =>
+        await _catalogItemRepository.AddAsync(name, description, price, availableStock, catalogBrandId, catalogTypeId, pictureFileName));
+    }
+
+    public async Task UpdateAsync(int id, string? name, string? description, decimal? price, int? availableStock, int? catalogBrandId, int? catalogTypeId, string? pictureFileName)
+    {
+        await ExecuteSafeAsync(async () =>
+        await _catalogItemRepository.UpdateAsync(id, name, description, price, availableStock, catalogBrandId, catalogTypeId, pictureFileName));
+    }
+
+    public async Task RemoveAsync(int id)
+    {
+        await ExecuteSafeAsync(async () => await _catalogItemRepository.RemoveAsync(id));
     }
 }
