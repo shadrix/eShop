@@ -54,21 +54,8 @@ public class CatalogService : ICatalogService
 
     public async Task<IEnumerable<SelectListItem>> GetTypes()
     {
-        await Task.Delay(300);
-        var list = new List<SelectListItem>
-        {
-            new SelectListItem()
-            {
-                Value = "0",
-                Text = "type 1"
-            },
-
-            new SelectListItem()
-            {
-                Value = "1",
-                Text = "type 2"
-            }
-        };
+        var result = await _httpClient.SendAsync<TypeList, HttpContent>($"{_settings.Value.CatalogUrl}/Types", HttpMethod.Post, new StringContent(String.Empty));
+        var list = result.Data.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Type }).ToList();
 
         return list;
     }

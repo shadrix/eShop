@@ -8,4 +8,5 @@ public interface ICatalogService
 {
     Task<PaginatedItemsResponse<CatalogItemDto>?> GetCatalogItemsAsync(int pageSize, int pageIndex, Dictionary<CatalogTypeFilter, int>? filters);
     Task<DataListResponse<CatalogBrandDto>> GetCatalogBrandsAsync();
+    Task<DataListResponse<CatalogTypeDto>> GetCatalogTypesAsync();
 }
