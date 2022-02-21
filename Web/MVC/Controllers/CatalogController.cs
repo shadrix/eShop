@@ -6,7 +6,7 @@ namespace MVC.Controllers;
 
 public class CatalogController : Controller
 {
-    private  readonly ICatalogService _catalogService;
+    private readonly ICatalogService _catalogService;
 
     public CatalogController(ICatalogService catalogService)
     {
@@ -14,15 +14,17 @@ public class CatalogController : Controller
     }
 
     public async Task<IActionResult> Index(int? brandFilterApplied, int? typesFilterApplied, int? page, int? itemsPage)
-    {   
+    {
         page ??= 0;
         itemsPage ??= 9;
-        
+
         var catalog = await _catalogService.GetCatalogItems(page.Value, itemsPage.Value, brandFilterApplied, typesFilterApplied);
+
         if (catalog == null)
         {
             return View("Error");
         }
+
         var info = new PaginationInfo()
         {
             ActualPage = page.Value,
@@ -38,8 +40,8 @@ public class CatalogController : Controller
             PaginationInfo = info
         };
 
-        vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";
-        vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
+        vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : string.Empty;
+        vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : string.Empty;
 
         return View(vm);
     }

@@ -32,9 +32,9 @@ public class HttpClientService : IHttpClientService
         {
             var resultContent = await result.Content.ReadAsStringAsync();
             var response = JsonConvert.DeserializeObject<TResponse>(resultContent);
-            return response;
+            return response!;
         }
 
-        return default(TResponse) !;
+        return default(TResponse)!;
     }
 }

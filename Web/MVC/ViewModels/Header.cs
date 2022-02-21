@@ -2,6 +2,6 @@
 
 public record Header
 {
-    public string Controller { get; init; }
-    public string Text { get; init; }
+    public string Controller { get; init; } = null!;
+    public string Text { get; init; } = null!;
 }
