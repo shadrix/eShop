@@ -60,4 +60,63 @@ public class CatalogItemRepository : ICatalogItemRepository
 
         return item.Entity.Id;
     }
+
+    public async Task<int?> UpdateAsync(CatalogItem item)
+    {
+        if (item == null)
+        {
+            return null;
+        }
+
+        var newItem = await _dbContext.CatalogItems.FirstOrDefaultAsync(i => i.Id == item.Id);
+
+        if (newItem != null)
+        {
+            newItem.Description = item.Description;
+            newItem.Name = item.Name;
+            newItem.Price = item.Price;
+            newItem.AvailableStock = item.AvailableStock;
+            newItem.CatalogBrandId = item.CatalogBrandId;
+            newItem.CatalogTypeId = item.CatalogTypeId;
+            newItem.PictureFileName = item.PictureFileName;
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        return newItem?.Id;
+    }
+
+    public async Task<int?> RemoveAsync(int itemId)
+    {
+        var item = await _dbContext.CatalogItems.Where(i => i.Id == itemId).FirstOrDefaultAsync();
+
+        if (item == null)
+        {
+            return null;
+        }
+
+        var result = _dbContext.Remove(item);
+        await _dbContext.SaveChangesAsync();
+
+        return result.Entity.Id;
+    }
+
+    public async Task<CatalogItem?> GetCatalogItemByIdAsync(int id)
+    {
+        return await _dbContext.CatalogItems.Where(i => i.Id == id).FirstOrDefaultAsync();
+    }
+
+    public async Task<IEnumerable<CatalogItem>> GetCatalogItemsByBrandAsync(int brandId)
+    {
+        return await _dbContext.CatalogItems
+            .Where(t => t.CatalogBrandId == brandId)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<CatalogItem>> GetCatalogItemsTypeAsync(int typeId)
+    {
+        return await _dbContext.CatalogItems
+            .Where(t => t.CatalogTypeId == typeId)
+            .ToListAsync();
+    }
 }

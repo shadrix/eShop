@@ -4,10 +4,10 @@ namespace MVC.ViewModels.CatalogViewModels;
 
 public class IndexViewModel
 {
-    public IEnumerable<CatalogItem> CatalogItems { get; set; }
-    public IEnumerable<SelectListItem> Brands { get; set; }
-    public IEnumerable<SelectListItem> Types { get; set; }
+    public IEnumerable<CatalogItem> CatalogItems { get; set; } = null!;
+    public IEnumerable<SelectListItem> Brands { get; set; } = null!;
+    public IEnumerable<SelectListItem> Types { get; set; } = null!;
     public int? BrandFilterApplied { get; set; }
     public int? TypesFilterApplied { get; set; }
-    public PaginationInfo PaginationInfo { get; set; }
+    public PaginationInfo PaginationInfo { get; set; } = null!;
 }

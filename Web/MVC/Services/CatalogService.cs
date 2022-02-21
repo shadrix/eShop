@@ -21,66 +21,68 @@ public class CatalogService : ICatalogService
     public async Task<Catalog> GetCatalogItems(int page, int take, int? brand, int? type)
     {
         var filters = new Dictionary<CatalogTypeFilter, int>();
-
         if (brand.HasValue)
         {
             filters.Add(CatalogTypeFilter.Brand, brand.Value);
         }
-        
+
         if (type.HasValue)
         {
             filters.Add(CatalogTypeFilter.Type, type.Value);
         }
-        
-        var result = await _httpClient.SendAsync<Catalog, PaginatedItemsRequest<CatalogTypeFilter>>($"{_settings.Value.CatalogUrl}/items",
-           HttpMethod.Post, 
-           new PaginatedItemsRequest<CatalogTypeFilter>()
-            {
+
+        var result = await _httpClient.SendAsync<Catalog, PaginatedItemsRequest<CatalogTypeFilter>>($"{_settings.Value.CatalogUrl}/items", HttpMethod.Post, new PaginatedItemsRequest<CatalogTypeFilter>()
+           {
                 PageIndex = page,
                 PageSize = take,
                 Filters = filters
-            });
+           });
 
         return result;
     }
 
     public async Task<IEnumerable<SelectListItem>> GetBrands()
     {
-        await Task.Delay(300);
-        var list = new List<SelectListItem>
+        var response = await _httpClient.SendAsync<GetBrandRequest<CatalogBrand>, GetBrandRequest<CatalogBrand>>($"{_settings.Value.CatalogUrl}/brands", HttpMethod.Get, null);
+
+        if (response == null)
         {
-            new SelectListItem()
+            return Enumerable.Empty<SelectListItem>();
+        }
+
+        var list = new List<SelectListItem>();
+
+        foreach (var item in response.Brands)
+        {
+            list.Add(new SelectListItem()
             {
-                Value = "0",
-                Text = "brand 1"
-            },
-            new SelectListItem()
-            {
-                Value = "1",
-                Text = "brand 2"
-            }
-        };
+                Value = item.Id.ToString(),
+                Text = item.Brand
+            });
+        }
 
         return list;
     }
 
     public async Task<IEnumerable<SelectListItem>> GetTypes()
     {
-        await Task.Delay(300);
-        var list = new List<SelectListItem>
+        var response = await _httpClient.SendAsync<GetTypeRequest<CatalogType>, GetTypeRequest<CatalogType>>($"{_settings.Value.CatalogUrl}/types", HttpMethod.Get, null);
+
+        if (response == null)
         {
-            new SelectListItem()
+            return Enumerable.Empty<SelectListItem>();
+        }
+
+        var list = new List<SelectListItem>();
+
+        foreach (var item in response.Types)
+        {
+            list.Add(new SelectListItem()
             {
-                Value = "0",
-                Text = "type 1"
-            },
-            
-            new SelectListItem()
-            {
-                Value = "1",
-                Text = "type 2"
-            }
-        };
+                Value = item.Id.ToString(),
+                Text = item.Type
+            });
+        }
 
         return list;
     }
