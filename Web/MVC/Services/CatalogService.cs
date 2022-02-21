@@ -26,40 +26,28 @@ public class CatalogService : ICatalogService
         {
             filters.Add(CatalogTypeFilter.Brand, brand.Value);
         }
-        
+
         if (type.HasValue)
         {
             filters.Add(CatalogTypeFilter.Type, type.Value);
         }
-        
+
         var result = await _httpClient.SendAsync<Catalog, PaginatedItemsRequest<CatalogTypeFilter>>($"{_settings.Value.CatalogUrl}/items",
-           HttpMethod.Post, 
+           HttpMethod.Post,
            new PaginatedItemsRequest<CatalogTypeFilter>()
-            {
-                PageIndex = page,
-                PageSize = take,
-                Filters = filters
-            });
+           {
+               PageIndex = page,
+               PageSize = take,
+               Filters = filters
+           });
 
         return result;
     }
 
     public async Task<IEnumerable<SelectListItem>> GetBrands()
     {
-        await Task.Delay(300);
-        var list = new List<SelectListItem>
-        {
-            new SelectListItem()
-            {
-                Value = "0",
-                Text = "brand 1"
-            },
-            new SelectListItem()
-            {
-                Value = "1",
-                Text = "brand 2"
-            }
-        };
+        var result = await _httpClient.SendAsync<BrandList, HttpContent>($"{_settings.Value.CatalogUrl}/Brands", HttpMethod.Post, new StringContent(String.Empty));
+        var list = result.Data.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Brand }).ToList(); 
 
         return list;
     }
@@ -74,7 +62,7 @@ public class CatalogService : ICatalogService
                 Value = "0",
                 Text = "type 1"
             },
-            
+
             new SelectListItem()
             {
                 Value = "1",

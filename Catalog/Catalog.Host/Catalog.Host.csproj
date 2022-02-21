@@ -25,6 +25,7 @@
       <None Remove="Data\Setup\CatalogBrands.csv" />
       <None Remove="Data\Setup\CatalogItems.csv" />
       <None Remove="Data\Setup\CatalogTypes.csv" />
+      <None Remove="Services\CatalogService.cs~RF17c074a.TMP" />
     </ItemGroup>
 
     <ItemGroup>

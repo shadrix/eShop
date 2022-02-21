@@ -10,16 +10,19 @@ namespace Catalog.Host.Services;
 public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogService
 {
     private readonly ICatalogItemRepository _catalogItemRepository;
+    private readonly ICatalogBrandRepository _catalogBrandRepository;
     private readonly IMapper _mapper;
 
     public CatalogService(
         IDbContextWrapper<ApplicationDbContext> dbContextWrapper,
         ILogger<BaseDataService<ApplicationDbContext>> logger,
         ICatalogItemRepository catalogItemRepository,
+        ICatalogBrandRepository catalogBrandRepository,
         IMapper mapper)
         : base(dbContextWrapper, logger)
     {
         _catalogItemRepository = catalogItemRepository;
+        _catalogBrandRepository = catalogBrandRepository;
         _mapper = mapper;
     }
 
@@ -55,6 +58,18 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
                 Data = result.Data.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList(),
                 PageIndex = pageIndex,
                 PageSize = pageSize
+            };
+        });
+    }
+
+    public async Task<DataListResponse<CatalogBrandDto>> GetCatalogBrandsAsync()
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogBrandRepository.GetBrandsAsync();
+            return new DataListResponse<CatalogBrandDto>
+            {
+                Data = result.Select(s => _mapper.Map<CatalogBrandDto>(s)).ToList()
             };
         });
     }
