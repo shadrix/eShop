@@ -1,6 +1,7 @@
 using System.Threading;
 using Catalog.Host.Data.Entities;
 using Catalog.Host.Models.Dtos;
+using Catalog.Host.Models.Enums;
 using Catalog.Host.Models.Response;
 
 namespace Catalog.UnitTests.Services;
@@ -67,16 +68,26 @@ public class CatalogServiceTest
             Name = "TestName"
         };
 
+        var testCategoryBrandSuccess = 1;
+        var testCategoryTypeSuccess = 1;
+        var listFilterSuccess = new Dictionary<CatalogTypeFilter, int>()
+        {
+            { CatalogTypeFilter.Brand, testCategoryBrandSuccess },
+            { CatalogTypeFilter.Type, testCategoryTypeSuccess }
+        };
+
         _catalogItemRepository.Setup(s => s.GetByPageAsync(
             It.Is<int>(i => i == testPageIndex),
-            It.Is<int>(i => i == testPageSize)))
+            It.Is<int>(i => i == testPageSize),
+            It.Is<int>(i => i == testCategoryBrandSuccess),
+            It.Is<int>(i => i == testCategoryTypeSuccess)))
             .ReturnsAsync(pagingPaginatedItemsSuccess);
 
         _mapper.Setup(s => s.Map<CatalogItemDto>(
             It.Is<CatalogItem>(i => i.Equals(catalogItemSuccess)))).Returns(catalogItemDtoSuccess);
 
         // act
-        var result = await _catalogService.GetCatalogItemsAsync(testPageSize, testPageIndex);
+        var result = await _catalogService.GetCatalogItemsAsync(testPageSize, testPageIndex, listFilterSuccess);
 
         // assert
         result.Should().NotBeNull();
@@ -92,14 +103,23 @@ public class CatalogServiceTest
         // arrange
         var testPageIndex = 1000;
         var testPageSize = 10000;
+        var testCategoryBrandFailed = 7;
+        var testCategoryTypeFailed = 8;
+        var listFilterSuccess = new Dictionary<CatalogTypeFilter, int>()
+        {
+            { CatalogTypeFilter.Brand, testCategoryBrandFailed },
+            { CatalogTypeFilter.Type, testCategoryTypeFailed }
+        };
 
         _catalogItemRepository.Setup(s => s.GetByPageAsync(
             It.Is<int>(i => i == testPageIndex),
-            It.Is<int>(i => i == testPageSize)))
+            It.Is<int>(i => i == testPageSize),
+            It.Is<int>(i => i == testCategoryBrandFailed),
+            It.Is<int>(i => i == testCategoryTypeFailed)))
             .Returns((Func<PaginatedItemsResponse<CatalogItemDto>>)null!);
 
         // act
-        var result = await _catalogService.GetCatalogItemsAsync(testPageSize, testPageIndex);
+        var result = await _catalogService.GetCatalogItemsAsync(testPageSize, testPageIndex, listFilterSuccess);
 
         // assert
         result.Should().BeNull();
