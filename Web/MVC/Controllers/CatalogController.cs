@@ -16,7 +16,7 @@ public class CatalogController : Controller
     public async Task<IActionResult> Index(int? brandFilterApplied, int? typesFilterApplied, int? page, int? itemsPage)
     {   
         page ??= 0;
-        itemsPage ??= 9;
+        itemsPage ??= 6;
         
         var catalog = await _catalogService.GetCatalogItems(page.Value, itemsPage.Value, brandFilterApplied, typesFilterApplied);
         if (catalog == null)
