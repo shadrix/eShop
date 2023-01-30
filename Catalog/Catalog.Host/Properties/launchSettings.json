@@ -1,11 +1,12 @@
-﻿{
+{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "MVC": {
+    "Catalog.Host": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "http://www.alevelwebsite.com:5001",
+      "launchUrl": "swagger",
+      "applicationUrl": "http://www.alevelwebsite.com:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

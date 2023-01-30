@@ -17,4 +17,8 @@
       <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="Properties\launchSettings.json" />
+    </ItemGroup>
+
 </Project>
