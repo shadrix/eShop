@@ -6,7 +6,7 @@ Need to path these lines
 
     127.0.0.1 www.alevelwebsite.com
     0.0.0.0 www.alevelwebsite.com
-    192.168.0.1 www.alevelwebsite.com
+    20.20.0.1 www.alevelwebsite.com
 
 #docker
 docker-compose build --no-cache
