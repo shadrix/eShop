@@ -30,8 +30,9 @@ namespace IdentityServer
                 {
                     Scopes = new List<Scope>
                     {
-                        new Scope("catalog.catalogbff"),
+                        new Scope("catalog.catalogbrand"),
                         new Scope("catalog.catalogitem"),
+                        new Scope("catalog.catalogtype")
                     },
                 }
             };
@@ -77,7 +78,26 @@ namespace IdentityServer
 
                     AllowedScopes =
                     {
-                        "mvc", "catalog.catalogbff", "catalog.catalogitem"
+                        "mvc", "catalog.catalogitem"
+                    }
+                },
+                
+                new Client
+                {
+                    ClientId = "basket",
+
+                    // no interactive user, use the clientid/secret for authentication
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+
+                    // secret for authentication
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    
+                    AllowedScopes =
+                    {
+                        "catalog.catalogitem"
                     }
                 },
                 new Client
